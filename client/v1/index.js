@@ -101,8 +101,8 @@ const products_range = marketplace.filter(({price}) => price => 50 && price <= 1
 console.log("Filter a specific price range : " + products_range);
 
 
-// 🎯 TODO: Average Basket
-// 1. Determine the average basket of the marketplace
+// 🎯 TODO: Average price
+// 1. Determine the average price of the marketplace
 // 2. Log the average
 
 var sum = 0;
