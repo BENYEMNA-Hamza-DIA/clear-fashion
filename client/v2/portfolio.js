@@ -128,8 +128,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 * @type {[type]}
 */
 selectPage.addEventListener('change', event => {
-  fetchProducts(parseInt(event.target.value),currentPagination.pageCount)
+  fetchProducts(parseInt(event.target.value),currentPagination.pageSize)
   .then(setCurrentProducts)
   .then(() => render(currentProducts, currentPagination));
 })
 
+/** Feature 2 : filter by brand
+ * 
+ */
