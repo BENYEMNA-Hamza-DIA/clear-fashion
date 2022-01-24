@@ -101,8 +101,8 @@ const products_range = marketplace.filter(({price}) => price => 50 && price <= 1
 console.log("Filter a specific price range : " + products_range);
 
 
-// 🎯 TODO: Average price
-// 1. Determine the average price of the marketplace
+// 🎯 TODO: Average Basket
+// 1. Determine the average basket of the marketplace
 // 2. Log the average
 
 var sum = 0;
@@ -163,7 +163,7 @@ console.log("Brands : " + brands);
 console.log("Number of products by brand :" + 
   "\nAdresse : " + adresseList.length +
   "\nLoom : " + loomList.length + 
-  "\n1083 : " + milleQVTroisList.length + 
+  "\n1083 : " + milleList.length + 
   "\nDedicated : " + dedicatedList.length + "\nAatise : " + aatiseList.length);
 
 // 🎯 TODO: Sort by price for each brand
@@ -211,7 +211,7 @@ function calcP90(list) {
 }
 let p90Adresse = calcP90(adresseList);
 let p90Loom = calcP90(loomList);
-let p901083 = calcP90(milleQVTroisList);
+let p901083 = calcP90(milleList);
 let p90Dedicated = calcP90(dedicatedList);
 let p90Aatise = calcP90(aatiseList);
 
@@ -340,7 +340,7 @@ function clone(obj) {
 let newList = clone(COTELE_PARIS);
 let indinceObjToSuppress = 0;
 for (const i in COTELE_PARIS) {
-  if (COTELE_PARIS[i].uuid == b56c6d88-749a-5b4c-b571-e5b5c6483131) indinceObjToSuppress = i;
+  if (COTELE_PARIS[i].uuid == "b56c6d88-749a-5b4c-b571-e5b5c6483131") indinceObjToSuppress = i;
 }
 newList.splice(indinceObjToSuppress, 1);
 console.log("New list of product : ");
@@ -389,4 +389,9 @@ console.log("Jacket variable : " + jacket);
 
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
+
+localStorage.setItem("favorite brands : " + MY_FAVORITE_BRANDS)
+
 // 2. log the localStorage
+
+console.log(window.localStorage)
