@@ -144,13 +144,14 @@ const render = (products, pagination) => {
  * 
  * @type {[type]}
  */
+
 selectShow.addEventListener('change', event => {
   fetchProducts(1, parseInt(event.target.value)) // 1 to reinitialize to page 1 when we change the pageSize
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
-});
 
-document.addEventListener('DOMContentLoaded', async () => {
+
+  document.addEventListener('DOMContentLoaded', async () => {
   const products = await fetchProducts();
 
   setCurrentProducts(products);
@@ -247,6 +248,6 @@ selectSort.addEventListener('change', async (event) => {
       break;
   }
   render(currentProducts, currentPagination);
+});
+
 })
-
-
