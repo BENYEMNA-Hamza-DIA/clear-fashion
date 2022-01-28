@@ -10,6 +10,7 @@ const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const selectBrand = document.querySelector('#brand-select');
 
 /**
  * Set global value
@@ -47,7 +48,7 @@ const fetchProducts = async (page = 1, size = 12) => {
 };
 
 /**
- * Render list of products
+ * Render products
  * @param  {Array} products
  */
 const renderProducts = products => {
@@ -72,7 +73,7 @@ const renderProducts = products => {
 };
 
 /**
- * Render page selector
+ * Render pagination
  * @param  {Object} pagination
  */
 const renderPagination = pagination => {
@@ -87,7 +88,7 @@ const renderPagination = pagination => {
 };
 
 /**
- * Render page selector
+ * Render indicator
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
@@ -96,11 +97,20 @@ const renderIndicators = pagination => {
   spanNbProducts.innerHTML = count;
 };
 
+
+
+/**
+ * List of renders
+ */
+
 const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+
 };
+
+
 
 /**
  * Declaration of all Listeners
@@ -111,7 +121,7 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+  fetchProducts(1, parseInt(event.target.value)) // 1 to reinitialize to page 1 when we change the pageSize
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
@@ -125,14 +135,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /** Feature 1 : Select the page to display
 * 
-* @type {[type]}
+* 
 */
 selectPage.addEventListener('change', event => {
   fetchProducts(parseInt(event.target.value),currentPagination.pageSize)
   .then(setCurrentProducts)
   .then(() => render(currentProducts, currentPagination));
-})
+});
 
 /** Feature 2 : filter by brand
  * 
+ * 
  */
+
+ 
