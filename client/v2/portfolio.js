@@ -12,6 +12,7 @@ const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
 const selectByReasonnablePrice = document.querySelector('#filter-reasonnable-price-select');
+const selectByRecentlyReleased = document.querySelector('#filter-recently-released-select');
 
 /**
  * Set global value
@@ -61,7 +62,8 @@ const renderProducts = products => {
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
+        <span>${product.price}€</span>
+        <span>, ${product.released}</span>
       </div>
     `;
     })
@@ -183,7 +185,7 @@ selectPage.addEventListener('change', event => {
     render(currentProducts, currentPagination);
 });
 
-/** Feature 3 & 4 : Filter by reasonnable price & latest released products
+/** Feature 3 : Filter by reasonnable price 
  * 
  */
 
@@ -193,9 +195,31 @@ selectPage.addEventListener('change', event => {
   if (event.target.value == "By reasonable price"){
     products.result = products.result.filter(product => product.price <= 50);
   }
-  else{}
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);
 
-})
+});
+
+/** Feature 4 : Filter by recently released
+ * 
+ */
+
+function recentlyReleased(product_date){
+  let now = new Date();
+  product_date = new Date(product_date);
+  return now - product_date;
+}
+
+
+ selectByRecentlyReleased.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "By recently released"){
+    products.result = products.result.filter(product => recentlyReleased(product.released) <= (24 * 60 * 60 * 1000 * 14));
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+
+});
