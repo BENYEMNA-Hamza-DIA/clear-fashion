@@ -25,10 +25,14 @@
           <select name="brand" id="brand-select"> </select>
         </div>
         <div id="price">
-          <span>By reasonable price:</span>
+          <label for="filter-reasonnable-price-select">By Reasonnable price (less than 50€):</label>
+          <select name="price" id="filter-reasonnable-price-select"> 
+            <option value="All products">All products</option>
+            <option value="By reasonable price">By reasonable price</option>
+          </select>
         </div>
         <div id="date">
-          <span>By recently released:</span>
+          <span>By recently released(less than 2 weeks):</span>
         </div>
         
         
@@ -36,10 +40,10 @@
       <div id="sort">
         <label for="sort-select">Sort:</label>
         <select name="sort" id="sort-select">
-          <option value="price-asc">Cheaper:</option>
-          <option value="price-desc">Expensive:</option>
-          <option value="date-asc">Recently released:</option>
-          <option value="date-desc">Anciently released:</option>
+          <option value="price-asc">Cheapest</option>
+          <option value="price-desc">Most expensive</option>
+          <option value="date-asc">Newest</option>
+          <option value="date-desc">Oldest</option>
         </select>
       </div>
     </section>

@@ -11,6 +11,7 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
+const selectByReasonnablePrice = document.querySelector('#filter-reasonnable-price-select');
 
 /**
  * Set global value
@@ -172,14 +173,29 @@ selectPage.addEventListener('change', event => {
   var products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
 
   if (event.target.value == "show all brands") {
-      products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
-      setCurrentProducts(products);
-      render(currentProducts, currentPagination);
-      
+      products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize)   
   }
   else {
       products.result = products.result.filter(item => item.brand == event.target.value)
-      setCurrentProducts(products);
-      render(currentProducts, currentPagination);
   }
+
+    setCurrentProducts(products);
+    render(currentProducts, currentPagination);
 });
+
+/** Feature 3 & 4 : Filter by reasonnable price & latest released products
+ * 
+ */
+
+ selectByReasonnablePrice.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "By reasonable price"){
+    products.result = products.result.filter(product => product.price <= 50);
+  }
+  else{}
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+
+})
