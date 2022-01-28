@@ -13,6 +13,7 @@ const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
 const selectByReasonnablePrice = document.querySelector('#filter-reasonnable-price-select');
 const selectByRecentlyReleased = document.querySelector('#filter-recently-released-select');
+const selectSort = document.querySelector('#sort-select');
 
 /**
  * Set global value
@@ -171,7 +172,7 @@ selectPage.addEventListener('change', event => {
  * 
  */
 
- selectBrand.addEventListener('change', async (event) => {
+selectBrand.addEventListener('change', async (event) => {
   var products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
 
   if (event.target.value == "show all brands") {
@@ -189,7 +190,7 @@ selectPage.addEventListener('change', event => {
  * 
  */
 
- selectByReasonnablePrice.addEventListener('change', async (event) => {
+selectByReasonnablePrice.addEventListener('change', async (event) => {
   const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
 
   if (event.target.value == "By reasonable price"){
@@ -212,7 +213,7 @@ function recentlyReleased(product_date){
 }
 
 
- selectByRecentlyReleased.addEventListener('change', async (event) => {
+selectByRecentlyReleased.addEventListener('change', async (event) => {
   const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
 
   if (event.target.value == "By recently released"){
@@ -223,3 +224,39 @@ function recentlyReleased(product_date){
   render(currentProducts, currentPagination);
 
 });
+
+/** Feature 5 & 6 : Sort by date and price (asc and desc)
+ * 
+ */
+
+function compareDate(p1,p2){
+  return p1.price - p2.price;
+}
+
+function comparePrice(p1,p2){
+  p1_date = new Date(p1.released);
+  p2_date = new Date(p2.released);
+  return p1_date - p2_date;
+}
+
+selectSort.addEventListener('change', async (event) => {
+  switch (event.target.value) {
+      case 'price-asc':
+          currentProducts = currentProducts.sort((a, b) => { return a.price - b.price; });
+          break;
+      case 'price-desc':
+          currentProducts = currentProducts.sort((a, b) => { return b.price - a.price; });
+          break;
+      case 'date-asc':
+          currentProducts = currentProducts.sort((a, b) => { return new Date(b.released) - new Date(a.released); });
+          break;
+      case 'date-desc':
+          currentProducts = currentProducts.sort((a, b) => { return new Date(a.released) - new Date(b.released); });
+          break;
+      default:
+          break;
+  }
+  render(currentProducts, currentPagination);
+})
+
+
