@@ -229,32 +229,22 @@ selectByRecentlyReleased.addEventListener('change', async (event) => {
  * 
  */
 
-function compareDate(p1,p2){
-  return p1.price - p2.price;
-}
-
-function comparePrice(p1,p2){
-  p1_date = new Date(p1.released);
-  p2_date = new Date(p2.released);
-  return p1_date - p2_date;
-}
-
 selectSort.addEventListener('change', async (event) => {
   switch (event.target.value) {
-      case 'price-asc':
-          currentProducts = currentProducts.sort((a, b) => { return a.price - b.price; });
-          break;
-      case 'price-desc':
-          currentProducts = currentProducts.sort((a, b) => { return b.price - a.price; });
-          break;
-      case 'date-asc':
-          currentProducts = currentProducts.sort((a, b) => { return new Date(b.released) - new Date(a.released); });
-          break;
-      case 'date-desc':
-          currentProducts = currentProducts.sort((a, b) => { return new Date(a.released) - new Date(b.released); });
-          break;
-      default:
-          break;
+    case 'price-asc':
+      currentProducts = currentProducts.sort((p1, p2) => { return p1.price - p2.price; });
+      break;
+    case 'price-desc':
+      currentProducts = currentProducts.sort((p1, p2) => { return p2.price - p1.price; });
+      break;
+    case 'date-asc':
+      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p2.released) - new Date(p1.released); });
+      break;
+    case 'date-desc':
+      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p1.released) - new Date(p2.released); });
+      break;
+    default:
+      break;
   }
   render(currentProducts, currentPagination);
 })
