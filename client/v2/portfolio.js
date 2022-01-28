@@ -97,7 +97,27 @@ const renderIndicators = pagination => {
   spanNbProducts.innerHTML = count;
 };
 
+/**
+ * Render brandselector
+ * @param {Array} products 
+ */
 
+ const renderBrands = products => {
+  const brandsNames = [];
+  products.forEach(product => {
+    if (!brandsNames.includes(product.brand)){
+      brandsNames.push(product.brand);
+    }
+  })
+  let options = ['<option value="...">...</option>']
+    options.push(Array.from(
+        { 'length': brandsNames.length },
+        (value, index) => `<option value="${brandsNames[index]}">${brandsNames[index]}</option>`
+    ).join(''));
+    options.push('<option value="show all brands">show all brands</option>')
+
+    selectBrand.innerHTML = options;
+};
 
 /**
  * List of renders
@@ -107,7 +127,7 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
-
+  renderBrands(products); //feature 2
 };
 
 
@@ -148,4 +168,18 @@ selectPage.addEventListener('change', event => {
  * 
  */
 
- 
+ selectBrand.addEventListener('change', async (event) => {
+  let products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "show all brands") {
+      products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize)
+      .then(setCurrentProducts)
+      .then(() => render(currentProducts, currentPagination));
+      
+  }
+  else {
+      products.result = products.result.filter(item => item.brand == event.target.value)
+      .then(setCurrentProducts)
+      .then(() => render(currentProducts, currentPagination));
+  }
+});
