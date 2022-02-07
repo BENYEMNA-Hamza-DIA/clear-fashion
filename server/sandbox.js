@@ -8,7 +8,8 @@
 
 
 const dedicatedbrand = require('./sources/dedicatedbrand');
-const adresse = require('.')
+const adresse = require('./sources/adresse')
+const montlimart = require('./sources/montlimart')
 
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
@@ -19,9 +20,9 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
 
     const fs = require('fs');
 
-      const data = JSON.stringify(products);
+      let data = JSON.stringify(products);
 
-      fs.writeFile('product_adresseparis.json', data, (err) => {
+      fs.writeFile('product_dedicatedbrand.json', data, (err) => {
           if (err) {
               throw err;
           }
