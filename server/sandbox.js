@@ -11,7 +11,6 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
 const adresse = require('./sources/adresse')
 const montlimart = require('./sources/montlimart')
 
-
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
@@ -20,7 +19,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
 
     const fs = require('fs');
 
-      let data = JSON.stringify(products);
+      const data = JSON.stringify(products);
 
       fs.writeFile('product_dedicatedbrand.json', data, (err) => {
           if (err) {
@@ -31,7 +30,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
       
     console.log(products);
     console.log('done');
-    process.exit(0);
+    //process.exit(0);
   } catch (e) {
     console.error(e);
     process.exit(1);
