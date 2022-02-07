@@ -7,9 +7,11 @@
  */
 
 
+//Dedicatedbrand
+
 const dedicatedbrand = require('./sources/dedicatedbrand');
 
-/**
+/** 
  * sandbox for dedicatedbrand
  * @param {*} eshop 
  */
@@ -41,13 +43,17 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
 }
 */
 
+
+//Adresse
+
 const adresse = require('./sources/adresse');
 
 /**
- * sandbox for dedicatedbrand
+ * sandbox for adresse
  * @param {*} eshop 
  */
 
+/*
  async function sandbox (eshop = 'https://adresse.paris/602-nouveautes') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
@@ -73,13 +79,9 @@ const adresse = require('./sources/adresse');
     process.exit(1);
   }
 }
+*/
+
 
 const [,, eshop] = process.argv;
 
 sandbox(eshop);
-
-
-
-
-const montlimart = require('./sources/montlimart');
-
