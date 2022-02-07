@@ -24,7 +24,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
           if (err) {
               throw err;
           }
-          console.log("JSON data is saved.");
+          console.log("JSON file is created and saved.");
       });
       
     console.log(products);
@@ -40,3 +40,11 @@ const [,, eshop] = process.argv;
 
 sandbox(eshop);
 
+/**
+ * Code to scrape the data from the website:
+ * 
+ * Brand 1:
+ * node sandbox.js "https://www.dedicatedbrand.com/en/men/t-shirts"
+ * 
+ * 
+ */
