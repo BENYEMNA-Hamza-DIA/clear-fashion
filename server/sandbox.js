@@ -8,6 +8,7 @@
 
 
 const dedicatedbrand = require('./sources/dedicatedbrand');
+const adresse = require('.')
 
 
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
