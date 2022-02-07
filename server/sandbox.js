@@ -15,6 +15,17 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
     const products = await dedicatedbrand.scrape(eshop);
+
+    const fs = require('fs');
+
+      const data = JSON.stringify(products);
+
+      fs.writeFile('product_adresseparis.json', data, (err) => {
+          if (err) {
+              throw err;
+          }
+          console.log("JSON data is saved.");
+      });
       
     console.log(products);
     console.log('done');
