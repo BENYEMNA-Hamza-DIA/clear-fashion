@@ -1,35 +1,29 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
  * @return {Array} products
  */
-const parse = data => {
-    const $ = cheerio.load(data);
+ const parse = (data) => {
+    const $ = cheerio.load(data, {'xmlMode': true});
+    return $('.item').map((i, element)=> {
+        const link = `${$(element).find('a').attr('href')}`;
 
-    return $('.category-products .products-grid .item .product-info')
-        .map((i, element) => {
-            let name = $(element)
-                //.find('.product-name')
-                .find('a')
-                .text()
-                .trim()
-                .replace(/\s/g, ' ').split("  ");
-            const price = parseInt(
-                $(element)
-                    .find('.price')
-                    .text()
-            );
-            var color = name[name.length - 1];
-            var link = $(element)
-                //.find('.product-name').attr('a href');
-                .find('a').attr('href');
-            var name_complete = name[0] + color;
-            return { name_complete, price, link };
-        })
-        .get();
+        return {
+            "link": link,
+            "brand" : "montlimart",
+            "price" : parseInt(
+                $(element).find('.price').text()
+            ),
+            "name" : $(element).find('.product-name').text().trim()
+            .replace(/\s/g, ' '),
+            "photo" : $(element).find('img').attr('src'),
+            "_id" : uuidv5(link, uuidv5.URL),  
+        };
+    }).get();
 };
 
 /**
