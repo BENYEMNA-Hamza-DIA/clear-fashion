@@ -40,9 +40,7 @@ const adresse = require('./sites/adresse');
         console.log("JSON file 'products_adresse.json' is created and saved.");
     });
 
-    //process.exit(0);
-
-    
+    //process.exit(0); //if executed, it do not create our JSON file with the 
 
   } catch (e) {
     console.error(e);
