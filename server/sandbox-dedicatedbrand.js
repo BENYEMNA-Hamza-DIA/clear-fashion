@@ -5,8 +5,8 @@
  */
 
 
-const dedicatedbrand = require('./sites/dedicatedbrand');
-const db = require('./db');
+import { scrape } from './sites/dedicatedbrand';
+import db from './db';
 
 /** 
  * sandbox for dedicatedbrand
@@ -17,34 +17,39 @@ const db = require('./db');
 async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
+    
+    //const total_products = []
+    
+    for (var i = 1; ; i++){
+      let eshop = 'https://www.dedicatedbrand.com/en/men/news?p=' + i;
+      console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
-    let i = 0;
-    do {
-      var test = true;
-      const products = await dedicatedbrand.scrape(eshop + '?p=' + i);
-      console.log(products);
-      i++;
-      if (products.lenght < 2) //if 0, inifinite loop
-      {
-        test = false;
+      let products = await scrape(eshop);
+      if (products.length!=0){
+        console.log(products);
+        products.forEach(product => total_products.push(product));
+        console.log(products.length,'products was scrapped');
+        
       }
-    } while (test);
-    /*
-    const fs = require('fs');
+      else{
+        console.log('Scrapping was sucessfully done')
+        process.exit(0);
+      }
+      /*
+      const fs = require('fs');
 
-    const data = JSON.stringify(products);
+      const data = JSON.stringify(products);
 
-    fs.writeFile('products_dedicatedbrand.json', data, (err) => {
+      fs.writeFile('products_dedicatedbrand.json', data, (err) => {
         if (err) {              
           throw err;
         }
         console.log("JSON file 'products_dedicatedbrand.json' is created and saved.");
       });
       */
-    console.log(products);
-    console.log('Scrapping was sucessfully done');
-    console.log(products.length,'products found')
-    process.exit(0); //if executed, it do not create our JSON file with the list of products 
+    }
+    
+      
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -55,7 +60,7 @@ async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/e
 
 //Montlimart
 
-const montlimart = require('./sources/montlimart');
+import montlimart from './sources/montlimart';
 
 
 /**

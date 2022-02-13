@@ -1,9 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 
-/** Link of the brands :
- * https://www.dedicatedbrand.com/en/men/news
+/** Link of the brand :
  * https://adresse.paris/602-nouveautes
- * https://www.montlimart.com/toute-la-collection.html
  */
 
 //Adresse
