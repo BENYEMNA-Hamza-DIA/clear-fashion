@@ -17,7 +17,7 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
  */
 
 
-async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
+async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
@@ -31,56 +31,18 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
           if (err) {
               throw err;
           }
-          console.log("JSON file is created and saved.");
+          console.log("JSON file 'products_dedicatedbrand.json' is created and saved.");
       });
       
     console.log(products);
-    console.log('done');
-    //process.exit(0); //if executed, it do not create our JSON file with the 
+    console.log('Scrapping was sucessfully done');
+    //process.exit(0); //if executed, it do not create our JSON file with the list of products 
   } catch (e) {
     console.error(e);
     process.exit(1);
   }
 }
 
-
-
-//Adresse
-
-const adresse = require('./sources/adresse');
-
-/**
- * sandbox for adresse
- * @param {*} eshop 
- */
-
-/*
- async function sandbox (eshop = 'https://adresse.paris/602-nouveautes') {
-  try {
-    console.log(`🕵️‍♀️  browsing ${eshop} source`);
-
-    const products = await adresse.scrape(eshop);
-
-    const fs = require('fs');
-
-      const data = JSON.stringify(products);
-
-      fs.writeFile('products_adresse.json', data, (err) => {
-          if (err) {
-              throw err;
-          }
-          console.log("JSON file is created and saved.");
-      });
-      
-    console.log(products);
-    console.log('done');
-    //process.exit(0); //if executed, it do not create our JSON file with the 
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
-  }
-}
-*/
 
 
 //Montlimart
@@ -119,8 +81,9 @@ const montlimart = require('./sources/montlimart');
     process.exit(1);
   }
 }
+*/
 
 
 const [,, eshop] = process.argv;
 
-sandbox(eshop);
+sandbox_dedicatedbrand(eshop);
