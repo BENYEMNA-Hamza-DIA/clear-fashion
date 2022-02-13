@@ -1,7 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 
 /** Link of the brand :
- * https://adresse.paris/602-nouveautes
+ * https://adresse.paris/630-toute-la-collection
  */
 
 //Adresse
@@ -14,7 +14,7 @@ const adresse = require('./sources/adresse');
  */
 
 
- async function sandbox_adresse (eshop = 'https://adresse.paris/602-nouveautes') {
+ async function sandbox_adresse (eshop = 'https://adresse.paris/630-toute-la-collection') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 

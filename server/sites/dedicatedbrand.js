@@ -19,16 +19,16 @@ const parse = data => {
       return {
         link,
         'brand': 'dedicated',
-        'price': parseInt(
-          $(element)
-            .find('.productList-price')
-            .text()
-        ),
         'name': $(element)
           .find('.productList-title')
           .text()
           .trim()
           .replace(/\s/g, ' '),
+        'price': parseInt(
+          $(element)
+          .find('.productList-price')
+          .text()
+          ),
         'photo': $(element)
           .find('.productList-image img')
           .attr('src'),

@@ -1,7 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 
 /** Link of the brand :
- * https://www.dedicatedbrand.com/en/men/news
+ * https://www.dedicatedbrand.com
  */
 
 
@@ -13,30 +13,34 @@ const dedicatedbrand = require('./sites/dedicatedbrand');
  */
 
 
-async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
+async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/en/men/all-men') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
     
-    let total = 0
+    let total_products_scrapped = 0
+    let total_pages_scrapped = 0
 
     const total_products = []
     
     for (var i = 1; ; i++){
-      let eshop = 'https://www.dedicatedbrand.com/en/men/news?p=' + i;
+      total_pages_scrapped += 1
+      let eshop = 'https://www.dedicatedbrand.com/en/men/all-men?p=' + i;
       console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
       let products = await dedicatedbrand.scrape(eshop);
       if (products.length!=0){
         console.log(products);
         products.forEach(product => total_products.push(product));
-        console.log(products.length,'products was scrapped');
-        total += products.length
+        console.log(products.length,'products was scrapped from page',total_pages_scrapped);
+        total_products_scrapped += products.length
+        
       }
       else{
-        console.log(total,'total products scrapped')
-        console.log(total_products.length,'lenght of total_products')
-        if (total == total_products.length){
+        console.log(total_products_scrapped,'total products scrapped from',total_pages_scrapped,'pages')
+        //console.log(total_products.length,'lenght of total_products')
+        if (total_products_scrapped == total_products.length){
           console.log('Scrapping was sucessfully done')
+          console.log("JSON file 'products_dedicatedbrand.json' is created and saved.");
         }
         
         process.exit(0);
@@ -50,14 +54,16 @@ async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/e
         if (err) {              
           throw err;
         }
-        console.log("JSON file 'products_dedicatedbrand.json' is created and saved.");
+        
       });
       
     }
       
   } catch (e) {
     console.error(e);
+    
     process.exit(1);
+    
   }
 }
 
