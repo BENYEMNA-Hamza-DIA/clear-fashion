@@ -16,7 +16,7 @@ const dedicatedbrand = require('./sources/dedicatedbrand');
  * @param {*} eshop 
  */
 
-/*
+
 async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
@@ -42,7 +42,7 @@ async function sandbox (eshop = 'https://www.dedicatedbrand.com/en/men/news') {
     process.exit(1);
   }
 }
-*/
+
 
 
 //Adresse
@@ -93,7 +93,7 @@ const montlimart = require('./sources/montlimart');
  * @param {*} eshop 
  */
 
-
+/*
  async function sandbox (eshop = 'https://www.montlimart.com/toute-la-collection.html') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
