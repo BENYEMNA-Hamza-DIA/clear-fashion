@@ -19,19 +19,20 @@ const parse = data => {
       return {
         link,
         'brand': 'dedicated',
+
         'name': $(element)
           .find('.productList-title')
           .text()
           .trim()
           .replace(/\s/g, ' '),
+
         'price': parseInt(
           $(element)
           .find('.productList-price')
           .text()
           ), 
+          
         'photo': $(element)
-          //.find('div img.js-lazy.entered.loaded')
-          //.attr('data-src'),
           .find('img')
           .attr('data-srcset'),
         
