@@ -5,7 +5,7 @@
  */
 
 
-const dedicatedbrand = require('./sites/dedicatedbrand');
+const dedicatedbrand = require('./sources/dedicatedbrand');
 
 /** 
  * sandbox for dedicatedbrand

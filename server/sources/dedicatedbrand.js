@@ -31,8 +31,10 @@ const parse = data => {
           ),
         //Je n'arrive pas à scrapper la photo, c'est bizarrement défini avec un before:: je ne  comprends pas 
         'photo': $(element)
-          .find('img.js-lazy.entered.loaded')
-          .attr('src'),
+          //.find('div img.js-lazy.entered')
+          //.attr('data-src'),
+          .find('img')
+          .attr('data-src'),
         
         '_id': uuidv5(link, uuidv5.URL)
       };
