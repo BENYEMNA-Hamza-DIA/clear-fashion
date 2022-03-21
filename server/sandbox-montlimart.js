@@ -1,12 +1,12 @@
 /* eslint-disable no-console, no-process-exit */
 
 /** Link of the brand :
- * https://www.montlimart.com/toute-la-collection.html
+ * https://www.montlimart.com/toute-la-collection.html?limit=all
  */
 
 //Montlimart
 
-const montlimart = require('./sites/montlimart');
+const montlimart = require('./sources/montlimart');
 
 
 /**
@@ -15,7 +15,7 @@ const montlimart = require('./sites/montlimart');
  */
 
 
- async function sandbox_montlimart (eshop = 'https://www.montlimart.com/toute-la-collection.html') {
+ async function sandbox_montlimart (eshop = 'https://www.montlimart.com/toute-la-collection.html?limit=all') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
     const total_products_ml = [] 
