@@ -28,13 +28,12 @@ const parse = data => {
           $(element)
           .find('.productList-price')
           .text()
-          ),
-        //Je n'arrive pas à scrapper la photo, c'est bizarrement défini avec un before:: je ne  comprends pas 
+          ), 
         'photo': $(element)
-          //.find('div img.js-lazy.entered')
+          //.find('div img.js-lazy.entered.loaded')
           //.attr('data-src'),
           .find('img')
-          .attr('data-src'),
+          .attr('data-srcset'),
         
         '_id': uuidv5(link, uuidv5.URL)
       };
