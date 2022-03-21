@@ -15,11 +15,11 @@ const {'v5': uuidv5} = require('uuid');
         return {
             "link": link,
             "brand" : "montlimart",
+            "name" : $(element).find('.product-name').text().trim()
+            .replace(/\s/g, ' '),
             "price" : parseInt(
                 $(element).find('.price').text()
             ),
-            "name" : $(element).find('.product-name').text().trim()
-            .replace(/\s/g, ' '),
             "photo" : $(element).find('img').attr('src'),
             "_id" : uuidv5(link, uuidv5.URL),  
         };

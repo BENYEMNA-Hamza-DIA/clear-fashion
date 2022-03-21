@@ -33,14 +33,14 @@ const montlimart = require('./sites/montlimart');
 
     const data = JSON.stringify(total_products_ml);
 
-    fs.writeFile('products_montlimart.json', data, (err) => {
+    fs.writeFileSync('products_montlimart.json', data, (err) => {
         if (err) {
             throw err;
         }
         console.log("JSON file 'products_montlimart.json' is created and saved.");
     });
 
-    //process.exit(0); //if executed, it do not create our JSON file with the 
+    process.exit(0); //if executed, it do not create our JSON file with the 
 
   } catch (e) {
     console.error(e);

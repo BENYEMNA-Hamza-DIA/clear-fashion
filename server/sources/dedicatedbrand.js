@@ -1,39 +1,41 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 
 /**
- * Parse webpage e-shop
+ * Parse webpage restaurant
  * @param  {String} data - html response
- * @return {Array} products
+ * @return {Object} restaurant
  */
 const parse = data => {
   const $ = cheerio.load(data);
 
   return $('.productList-container .productList')
     .map((i, element) => {
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
-      const price = parseInt(
-        $(element)
+      const link = `https://www.dedicatedbrand.com${$(element)
+        .find('.productList-link')
+        .attr('href')}`;
+
+      return {
+        link,
+        'brand': 'dedicated',
+        'name': $(element)
+          .find('.productList-title')
+          .text()
+          .trim()
+          .replace(/\s/g, ' '),
+        'price': parseInt(
+          $(element)
           .find('.productList-price')
           .text()
-        );
-      const materialInfo = $(element)
-            .find('.productList-image-materialInfo')
-            .text()
-            .trim()
-            .replace(/\s/g, ' ');
-
-        const nameInfo = name + materialInfo;
-        var link = $(element)
-            .find('.productList-link').attr('href');
-        const prelink = 'https://www.dedicatedbrand.com';
-        link = prelink + link;
-
-      return {nameInfo, price, link};
+          ),
+        //Je n'arrive pas à scrapper la photo, c'est bizarrement défini avec un before:: je ne  comprends pas 
+        'photo': $(element)
+          .find('img.js-lazy.entered.loaded')
+          .attr('src'),
+        
+        '_id': uuidv5(link, uuidv5.URL)
+      };
     })
     .get();
 };

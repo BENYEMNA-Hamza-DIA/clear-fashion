@@ -52,7 +52,7 @@ async function sandbox_dedicatedbrand (eshop = 'https://www.dedicatedbrand.com/e
 
       const data = JSON.stringify(total_products_db);
 
-      fs.writeFile('products_dedicatedbrand.json', data, (err) => {
+      fs.writeFileSync('products_dedicatedbrand.json', data, (err) => {
         if (err) {              
           throw err;
         }

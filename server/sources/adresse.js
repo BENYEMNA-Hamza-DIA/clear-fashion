@@ -9,22 +9,29 @@ const {'v5': uuidv5} = require('uuid');
  */
 
  const parse = (data) => {
-    const $ = cheerio.load(data, {'xmlMode': true});
+    const $ = cheerio.load(data);
     return $('.product-container').map((i, element)=> {
         const link = `${$(element).find('a').attr('href')}`;
-        const released = new Date();
         
         return {
             "link": link,
+
             "brand" : "adresse",
+
+            "name" : $(element).find('.product-name-container.versionpc .product-name')
+            .text()
+            .trim()
+            .replace(/\s/g, ' '),
+
             "price" : parseInt(
                 $(element).find('.price.product-price').text()
             ),
-            "name" : $(element).find('.product-name-container.versionpc .product-name').text().trim()
-            .replace(/\s/g, ' '),
-            "photo" : $(element).find('img').attr('src'),
+
+            "photo" : $(element)
+            .find('a img.replace-2x.lazy.img_0')
+            .attr('data-original'),
+            
             "_id" : uuidv5(link, uuidv5.URL),
-            "release date" : released.toLocaleDateString() 
         };
     }).get();
 };

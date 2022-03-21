@@ -4,9 +4,15 @@
  * https://adresse.paris/630-toute-la-collection
  */
 
-//Adresse
+ const fetch = require("node-fetch");
+ const fs = require('fs');
 
-const adresse = require('./sites/adresse');
+//Adresse
+//const dedicatedbrand = require('./sources/dedicatedbrand');
+//const montlimart = require('./sources/montlimarbrand');
+const adresse = require('./sources/adresse');
+
+
 
 /**
  * sandbox for adresse
@@ -29,18 +35,17 @@ const adresse = require('./sites/adresse');
     console.log('Scrapping was sucessfully done');
     
 
-    const fs = require('fs');
 
     const data = JSON.stringify(total_products_a);
 
-    fs.writeFile('products_adresse.json', data, (err) => {
+    fs.writeFileSync('products_adresse.json', data, (err) => {
         if (err) {
             throw err;
         }
         console.log("JSON file 'products_adresse.json' is created and saved.");
     });
 
-    //process.exit(0); //if executed, it do not create our JSON file with the 
+    process.exit(0); //if executed, it do not create our JSON file with the 
 
   } catch (e) {
     console.error(e);
