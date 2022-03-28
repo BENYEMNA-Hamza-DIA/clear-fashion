@@ -1,85 +1,42 @@
-require('dotenv').config();
-const {MongoClient} = require('mongodb');
-const fs = require('fs');
+// tuto : https://dev.to/dalalrohit/how-to-connect-to-mongodb-atlas-using-node-js-k9i
+// JavaScript source code
+const MongoClient = require('mongodb').MongoClient;
+//const { MongoClient } = require('mongodb');
+const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const MONGODB_DB_NAME = 'ClearFashion'
 
-const MONGODB_DB_NAME = 'clearfashion';
-const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = process.env.MONGODB_URI;
+const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}
 
-let client = null;
-let database = null;
-
-/**
- * Get db connection
- * @type {MongoClient}
- */
-const getDB = module.exports.getDB = async () => {
-  try {
-    if (database) {
-      console.log('💽  Already Connected');
-      return database;
+async function connect() {
+    try {
+        const client = await MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+        let connexion_db=client.db(MONGODB_DB_NAME)
+        console.log('Successfully connected to database !')
+        return connexion_db
+    }
+    catch (err) {
+        console.error(`Error connecting to the database... \n${err}`);
     }
 
-    client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
-    database = client.db(MONGODB_DB_NAME);
+}
 
-    console.log('💽  Connected');
-
-    return database;
-  } catch (error) {
-    console.error('🚨 MongoClient.connect...', error);
-    return null;
-  }
-};
+connect();
 
 /**
- * Insert list of products
- * @param  {Array}  products
- * @return {Object}
+ * Creating a collection with all the products
  */
-module.exports.insert = async products => {
-  try {
-    const db = await getDB();
-    const collection = db.collection(MONGODB_COLLECTION);
-    // More details
-    // https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/#insert-several-document-specifying-an-id-field
-    const result = await collection.insertMany(products, {'ordered': false});
 
-    return result;
-  } catch (error) {
-    console.error('🚨 collection.insertMany...', error);
-    fs.writeFileSync('products.json', JSON.stringify(products));
-    return {
-      'insertedCount': error.result.nInserted
-    };
-  }
-};
+const all_products = require('../total_products.json');
 
-/**
- * Find products based on query
- * @param  {Array}  query
- * @return {Array}
- */
-module.exports.find = async query => {
-  try {
-    const db = await getDB();
-    const collection = db.collection(MONGODB_COLLECTION);
-    const result = await collection.find(query).toArray();
+async function create_collection(products) {
+    const db = await connect();
+    const collection = db.collection('all_products');
+    for (product of products) {
+        const result = collection.insertMany(product);
+    }
+}
 
-    return result;
-  } catch (error) {
-    console.error('🚨 collection.find...', error);
-    return null;
-  }
-};
-
-/**
- * Close the connection
- */
-module.exports.close = async () => {
-  try {
-    await client.close();
-  } catch (error) {
-    console.error('🚨 MongoClient.close...', error);
-  }
-};
+create_collection([all_products]);
