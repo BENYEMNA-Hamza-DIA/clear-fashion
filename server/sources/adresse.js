@@ -10,31 +10,34 @@ const {'v5': uuidv5} = require('uuid');
 
  const parse = (data) => {
     const $ = cheerio.load(data);
-    return $('.product-container').map((i, element)=> {
+    return $('.product-container')
+    .map((i, element)=> {
         const link = `${$(element).find('a').attr('href')}`;
         
-        return {
-            "link": link,
+        const brand = "adresse";
 
-            "brand" : "adresse",
+        const name = $$(element)
+        .find('.product-name-container.versionpc .product-name')
+        .text()
+        .trim()
+        .replace(/\s/g, ' ');
 
-            "name" : $(element).find('.product-name-container.versionpc .product-name')
+        const price = parseInt(
+            $(element)
+            .find('.price.product-price')
             .text()
-            .trim()
-            .replace(/\s/g, ' '),
+        );
 
-            "price" : parseInt(
-                $(element).find('.price.product-price').text()
-            ),
+        const photo = $(element)
+        .find('a img.replace-2x.lazy.img_0')
+        .attr('data-original');
 
-            "photo" : $(element)
-            .find('a img.replace-2x.lazy.img_0')
-            .attr('data-original'),
-            
-            "_id" : uuidv5(link, uuidv5.URL),
-        };
+        const id = uuidv5(link, uuidv5.URL);
+
+        return (brand, link, name, price, photo)
     }).get();
 };
+
 
 /**
  * Scrape all the products for a given url page
