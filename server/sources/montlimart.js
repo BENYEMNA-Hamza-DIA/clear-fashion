@@ -8,33 +8,31 @@ const {'v5': uuidv5} = require('uuid');
  * @return {Array} products
  */
  const parse = (data) => {
-    const $ = cheerio.load(data, {'xmlMode': true});
+    const $ = cheerio.load(data);
     return $('.item').map((i, element)=> {
         const link = `${$(element).find('a').attr('href')}`;
 
-        return {
-            "link": link,
+        const brand = "montlimart";
 
-            "brand" : "montlimart",
+        const name = $(element)
+        .find('.product-name')
+        .text()
+        .trim()
+        .replace(/\s/g, ' ');
 
-            "name" : $(element)
-            .find('.product-name')
-            .text()
-            .trim()
-            .replace(/\s/g, ' '),
+        const price =  parseInt($(element)
+        .find('.price')
+        .text()
+        );
 
-            "price" : parseInt(
-                $(element)
-                .find('.price')
-                .text()
-            ),
+        const photo = $(element)
+        .find('img')
+        .attr('src');
 
-            "photo" : $(element)
-            .find('img')
-            .attr('src'),
+        const id = uuidv5(link, uuidv5.URL);
+        
+        return {brand, link, name, price, photo, id};
 
-            "_id" : uuidv5(link, uuidv5.URL),  
-        };
     }).get();
 };
 

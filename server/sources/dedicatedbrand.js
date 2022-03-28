@@ -13,33 +13,31 @@ const parse = data => {
   return $('.productList-container .productList')
     .map((i, element) => {
       const link = `https://www.dedicatedbrand.com${$(element)
-        .find('.productList-link')
-        .attr('href')}`;
+      .find('.productList-link')
+      .attr('href')}`;
 
-      return {
-        link,
-        'brand': 'dedicated',
+      const brand = 'dedicated';
 
-        'name': $(element)
-          .find('.productList-title')
-          .text()
-          .trim()
-          .replace(/\s/g, ' '),
+      const name = $(element)
+      .find('.productList-title')
+      .text()
+      .trim()
+      .replace(/\s/g, ' ');
 
-        'price': parseInt(
-          $(element)
-          .find('.productList-price')
-          .text()
-          ), 
+      const price = parseInt($(element)
+      .find('.productList-price')
+      .text()
+      );
           
-        'photo': $(element)
-          .find('img')
-          .attr('data-srcset'),
+      const photo = $(element)
+      .find('img')
+      .attr('data-src');
         
-        '_id': uuidv5(link, uuidv5.URL)
-      };
-    })
-    .get();
+      const id = uuidv5(link, uuidv5.URL);
+
+      return {brand, link, name, price, photo, id};
+      
+    }).get();
 };
 
 /**

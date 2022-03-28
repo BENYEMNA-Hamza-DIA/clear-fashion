@@ -16,16 +16,15 @@ const {'v5': uuidv5} = require('uuid');
         
         const brand = "adresse";
 
-        const name = $$(element)
+        const name = $(element)
         .find('.product-name-container.versionpc .product-name')
         .text()
         .trim()
         .replace(/\s/g, ' ');
 
-        const price = parseInt(
-            $(element)
-            .find('.price.product-price')
-            .text()
+        const price = parseInt($(element)
+        .find('.price.product-price')
+        .text()
         );
 
         const photo = $(element)
@@ -34,9 +33,10 @@ const {'v5': uuidv5} = require('uuid');
 
         const id = uuidv5(link, uuidv5.URL);
 
-        return (brand, link, name, price, photo)
+        return {brand, link, name, price, photo, id};
     }).get();
 };
+
 
 
 /**
