@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {MongoClient, ExplainVerbosity} = require('mongodb');
+const {MongoClient} = require('mongodb');
 const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'ClearFashion';
 
@@ -22,16 +22,16 @@ const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => {
     console.log("⏳ Connection to ClearFashion cluster ...");
     try {
 
-        client = await MongoClient.connect(uri, {'useNewUrlParser': true});
+        client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
         console.log("🎯 Connection Successful !");
-        db =  client.db(name);
+        db =  client.db(MONGODB_DB_NAME );
     }
     catch (error) {
         console.log('Connection failed.', error);
     }
 }
 
-//module.exports.connect = connect;
+module.exports.connect = connect;
 
 
 
@@ -43,6 +43,8 @@ const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => {
   console.log("Connection closed.");
 }
 
+module.exports.close = close;
+
 
 /**
 * Create a database in the cluster
@@ -50,9 +52,9 @@ const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => {
 async function create_database(){
   
   //if the database exists, it drops it. This way, we could refresh the database.
-  if(db.collection('all_products')){
-    await db.collection('all_products').drop();
-  }
+  //if(db.collection('all_products')){
+    //await db.collection('all_products').drop();
+  //}
   const data = db.collection('all_products');
   const result = await data.insertMany(products, {'ordered': false});
   console.log("👕 Products successfully loaded in ClearFashion ");
@@ -65,7 +67,7 @@ async function create_database(){
  */
 async function drop_database(){
   await db.collection('all_products').drop();
-  console.log('Database dropped.')
+  console.log('Database refresh ...')
 }
   
 
@@ -80,10 +82,11 @@ async function drop_database(){
  * @returns 
  */
 
- //module.exports.find_limit = async (query) => {
- find_limit = async (query) => {
-  const collection = db.collection('all_products');
-  const result = await collection.aggregate(query).toArray();
+ module.exports.find_limit = async (query) => {
+ //find_limit = async (query) => {
+  const data = db.collection('all_products');
+  const result = await data.aggregate(query).toArray();
+  //console.log(result);
   return (result);
 };
 
@@ -96,7 +99,7 @@ module.exports.all_products = async () => {
 //all_products = async () => {
   const data = await db.collection("all_products");
   const all_products = await data.find().toArray();
-  //console.log(all_products );
+  //console.log(all_products);
   return (all_products);
 }
 
@@ -181,12 +184,14 @@ module.exports.sorted_price_desc = async () => {
 
 async function main(){
   await connect();
+
+  //To refresh the database, we drop then create.
+  //Delete database
+  await drop_database();
   
   //Create database
   await create_database();
 
-  //Delete database
-  //await drop_database();
 
   /**
    *  Queries
