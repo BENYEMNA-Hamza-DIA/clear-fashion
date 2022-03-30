@@ -29,9 +29,9 @@ const {'v5': uuidv5} = require('uuid');
         .find('img')
         .attr('src');
 
-        const id = uuidv5(link, uuidv5.URL);
+        const uuid = uuidv5(link, uuidv5.URL);
         
-        return {brand, link, name, price, photo, id};
+        return {brand, link, name, price, photo, uuid};
 
     }).get();
 };
