@@ -8,7 +8,7 @@ let db;
 
 const products = require('../total_products.json'); //products of the crapping to store in the mongodb database
 
-//const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 /**
  * Connection to the db 
@@ -110,12 +110,12 @@ module.exports.all_products = async () => {
  * @returns 
  */
 
-module.exports.find_by_id= async (product_id) => {
-//find_by_id = async (product_id) => {
+//module.exports.find_by_id= async (product_id) => {
+find_by_id = async (product_id) => {
     const data = db.collection('all_products');
-    const product = await data.find({'id': product_id}).toArray();
+    const product = await data.find({'_id': ObjectId(product_id)}).toArray();
     console.log("Products with the id '" + product_id + "' :");
-    //console.log(product);
+    console.log(product);
     return (product);
 }
 
@@ -197,7 +197,7 @@ async function main(){
    *  Queries
    */
   //await all_products();
-  await find_by_id("62360eae-0a42-5761-b909-aeedfd9d7b9f");
+  await find_by_id("62454863a87dfa173b6541d7");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();
