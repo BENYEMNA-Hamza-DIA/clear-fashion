@@ -51,14 +51,13 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * By id
- * URL : http://localhost:8092/:_id
+ * URL : http://localhost:8092/products/:_id
  */
 
- app.get('/products/:id', async (request, response) => {
+ app.get('/products/:_id', async (request, response) => {
   await connection();
-  let products = await db.by_id(request.params._id);
-
-  response.send({ "product by id": products })
+  let product = await db.by_id(request.params._id);
+  response.send({"product by id": product})
 })
 
 
