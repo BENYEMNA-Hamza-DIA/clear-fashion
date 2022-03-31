@@ -63,6 +63,17 @@ console.log(`📡 Running on port ${PORT}`);
 })
 
 /**
+ * By brand
+ */
+
+ app.get('/products/brand=', async(request, response) => {
+  await connection();
+  let products = await db.by_brand(request.params.brand);
+  response.send({"products" : products});
+})
+
+
+/**
  * Search
  */
 
@@ -98,5 +109,6 @@ async function main(){
     await connection();
     app.listen(PORT);
   }
+
   main();
 
