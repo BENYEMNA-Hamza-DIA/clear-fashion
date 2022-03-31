@@ -49,10 +49,13 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({"all products" : products});
 })
 
+
 /**
  * By id
- * URL : http://localhost:8092/products/:_id
+ * test_id : 624578c70893460e53714433
+ * URL : http://localhost:8092/products/624578c70893460e53714433
  */
+
 
  app.get('/products/:_id', async (request, response) => {
   await connection();
