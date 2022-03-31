@@ -8,7 +8,7 @@ let db;
 
 const products = require('../total_products.json'); //products of the crapping to store in the mongodb database
 
-const { ObjectId } = require('mongodb');
+//const { ObjectId } = require('mongodb');
 
 /**
  * Connection to the db 
@@ -22,9 +22,9 @@ const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => {
     console.log("⏳ Connection to ClearFashion cluster ...");
     try {
 
-        client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+        client = await MongoClient.connect(uri, {'useNewUrlParser': true});
         console.log("🎯 Connection Successful !");
-        db =  client.db(MONGODB_DB_NAME );
+        db =  client.db(name);
     }
     catch (error) {
         console.log('Connection failed.', error);
@@ -111,9 +111,9 @@ module.exports.all_products = async () => {
  */
 
 module.exports.find_by_id= async (product_id) => {
-//find_by_uuid = async (product_id) => {
+//find_by_id = async (product_id) => {
     const data = db.collection('all_products');
-    const product = await data.find({id: product_id}).toArray();
+    const product = await data.find({'id': product_id}).toArray();
     console.log("Products with the id '" + product_id + "' :");
     //console.log(product);
     return (product);
@@ -183,21 +183,21 @@ module.exports.sorted_price_desc = async () => {
 */
 
 async function main(){
+
   await connect();
 
-  //To refresh the database, we drop then create.
+  //To refresh the database, we drop then create. BAD IDEA !
   //Delete database
-  await drop_database();
+  //await drop_database();
   
   //Create database
   await create_database();
-
 
   /**
    *  Queries
    */
   //await all_products();
-  //await find_by_uuid("62360eae-0a42-5761-b909-aeedfd9d7b9f");
+  await find_by_id("62360eae-0a42-5761-b909-aeedfd9d7b9f");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();
