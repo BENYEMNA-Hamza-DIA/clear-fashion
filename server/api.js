@@ -1,7 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-
+//const db = require('./db');
 
 const PORT = 8092;
 const app = express();
@@ -14,10 +14,6 @@ app.use(helmet());
 app.options('*', cors());
 
 
-
-app.get('/', (request, response) => {
-  response.send({'ack': true});
-});
 
 console.log(`📡 Running on port ${PORT}`);
 app.listen(PORT);

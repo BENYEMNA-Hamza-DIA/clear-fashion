@@ -1,5 +1,7 @@
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
+const {ExplainVerbosity} = require('mongodb');
+
 const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'ClearFashion';
 
@@ -50,12 +52,12 @@ module.exports.close = close;
 * Create a database in the cluster
 */
 async function create_database(){
-  
+  const db = await connect();
   //if the database exists, it drops it. This way, we could refresh the database.
   //if(db.collection('all_products')){
     //await db.collection('all_products').drop();
   //}
-  const data = db.collection('all_products');
+  const data = db.collection('products');
   const result = await data.insertMany(products, {'ordered': false});
   console.log("👕 Products successfully loaded in ClearFashion ");
 
@@ -66,7 +68,7 @@ async function create_database(){
  * Drop the database
  */
 async function drop_database(){
-  await db.collection('all_products').drop();
+  await db.collection("products").drop();
   console.log('Database refresh ...')
 }
   
@@ -84,7 +86,8 @@ async function drop_database(){
 
  module.exports.find_limit = async (query) => {
  //find_limit = async (query) => {
-  const data = db.collection('all_products');
+  //const db = await connect();
+  const data = db.collection("products");
   const result = await data.aggregate(query).toArray();
   //console.log(result);
   return (result);
@@ -97,9 +100,10 @@ async function drop_database(){
 
 module.exports.all_products = async () => {
 //all_products = async () => {
-  const data = await db.collection("all_products");
+  //const db = await connect();
+  const data = await db.collection("products");
   const all_products = await data.find().toArray();
-  //console.log(all_products);
+  console.log(all_products);
   return (all_products);
 }
 
@@ -110,12 +114,13 @@ module.exports.all_products = async () => {
  * @returns 
  */
 
-//module.exports.find_by_id= async (product_id) => {
-find_by_id = async (product_id) => {
-    const data = db.collection('all_products');
+module.exports.find_by_id= async (product_id) => {
+//find_by_id = async (product_id) => {
+    //const db = await connect();
+    const data = db.collection('products');
     const product = await data.find({'_id': ObjectId(product_id)}).toArray();
-    console.log("Products with the id '" + product_id + "' :");
-    console.log(product);
+    //console.log("Products with the id '" + product_id + "' :");
+    //console.log(product);
     return (product);
 }
 
@@ -127,9 +132,10 @@ find_by_id = async (product_id) => {
 
 module.exports.by_brand = async (brand) => {
 //by_brand = async (brand) => {
-  const data = db.collection('all_products');
+  //const db = await connect();
+  const data = db.collection('products');
   const brand_filtered = await data.find({'brand' : `${brand}`}).toArray();
-  console.log("Products from the brand " + brand + ":");
+  //console.log("Products from the brand " + brand + ":");
   //console.log(brand_filtered);
   return (brand_filtered);
 }
@@ -142,9 +148,10 @@ module.exports.by_brand = async (brand) => {
 
 module.exports.less_than_price = async (price) => {
 //less_than_price = async (price) => {
-  const data = db.collection('all_products');
+  //const db = await connect();
+  const data = db.collection('products');
   const price_limited = await data.find({'price' : {'$lte' : parseInt(price,10)}}).toArray();
-  console.log("Products that cost less than " + price + ":");
+  //console.log("Products that cost less than " + price + ":");
   //console.log(price_limited);
   return (price_limited);
  }
@@ -156,9 +163,10 @@ module.exports.less_than_price = async (price) => {
 
 module.exports.sorted_price_asc = async () => {
 //sorted_price_asc = async () => {
-  const data = db.collection('all_products')
+  //const db = await connect();
+  const data = db.collection('products')
   const sorted_asc = await data.find().sort({'price' : 1}).toArray();
-  console.log('Products sorted by ascending price:');
+  //console.log('Products sorted by ascending price:');
   //console.log(sorted_asc);
   return (sorted_asc);
 }
@@ -170,9 +178,10 @@ module.exports.sorted_price_asc = async () => {
 
 module.exports.sorted_price_desc = async () => {
  //sorted_price_desc = async () => {
-  const data = db.collection('all_products')
+  //const db = await connect();
+  const data = db.collection('products')
   const sorted_desc = await data.find().sort({'price' : -1}).toArray();
-  console.log('Products sorted by descending price:');
+  //console.log('Products sorted by descending price:');
   //console.log(sorted_desc);
   return (sorted_desc);
 }
@@ -191,13 +200,13 @@ async function main(){
   //await drop_database();
   
   //Create database
-  await create_database();
+  //await create_database();
 
   /**
    *  Queries
    */
   //await all_products();
-  await find_by_id("62454863a87dfa173b6541d7");
+  //await find_by_id("624564839c5986852c1d83ac");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();
