@@ -206,7 +206,7 @@ async function main(){
    *  Queries
    */
   //await all_products();
-  //await find_by_id("624575ff6e2f73db99c69000");
+  //await by_id("624575ff6e2f73db99c69000");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();

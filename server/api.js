@@ -23,7 +23,6 @@ console.log(`📡 Running on port ${PORT}`);
     await db.connect();
   }
 
-
 /*********************************************
  * Request API 
  */
@@ -31,6 +30,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * Test
+ * URL : http://localhost:8092/
  */
 
  app.get('/', (request, response) => {
@@ -40,13 +40,25 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * All products
+ * URL : http://localhost:8092/products
  */
 
  app.get('/products', async(request, response) => {
   await connection();
   let products = await db.all_products();
+  response.send({"all products" : products});
+})
 
-  response.send({"result" : products});
+/**
+ * By id
+ * URL : http://localhost:8092/:_id
+ */
+
+ app.get('/products/:id', async (request, response) => {
+  await connection();
+  let products = await db.by_id(request.params._id);
+
+  response.send({ "product by id": products })
 })
 
 
