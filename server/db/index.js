@@ -114,13 +114,13 @@ module.exports.all_products = async () => {
  * @returns 
  */
 
-//module.exports.find_by_id= async (product_id) => {
-find_by_id = async (product_id) => {
+module.exports.find_by_id= async (product_id) => {
+//find_by_id = async (product_id) => {
     //const db = await connect();
     const data = db.collection('products');
     const product = await data.find({'_id': ObjectId(product_id)}).toArray();
-    console.log("Products with the id '" + product_id + "' :");
-    console.log(product);
+    //console.log("Products with the id '" + product_id + "' :");
+    //console.log(product);
     return (product);
 }
 
@@ -197,16 +197,16 @@ async function main(){
 
   //To refresh the database, we drop then create. BAD IDEA !
   //Delete database
-  //await drop_database();
+  await drop_database();
   
   //Create database
-  //await create_database();
+  await create_database();
 
   /**
    *  Queries
    */
   //await all_products();
-  await find_by_id("624575ff6e2f73db99c69000");
+  //await find_by_id("624575ff6e2f73db99c69000");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();

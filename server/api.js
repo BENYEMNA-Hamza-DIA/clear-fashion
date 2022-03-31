@@ -13,9 +13,12 @@ app.use(helmet());
 
 app.options('*', cors());
 
-app.get('/', (request, response) => {
+/**
+ * app.get('/', (request, response) => {
     response.send({ 'ack': true });
 });
+ */
+
 
 console.log(`📡 Running on port ${PORT}`);
 app.listen(PORT);
