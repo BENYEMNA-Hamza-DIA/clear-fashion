@@ -52,7 +52,7 @@ module.exports.close = close;
 * Create a database in the cluster
 */
 async function create_database(){
-  const db = await connect();
+  //const db = await connect();
   //if the database exists, it drops it. This way, we could refresh the database.
   //if(db.collection('all_products')){
     //await db.collection('all_products').drop();
@@ -197,10 +197,10 @@ async function main(){
 
   //To refresh the database, we drop then create. BAD IDEA !
   //Delete database
-  //await drop_database();
+  await drop_database();
   
   //Create database
-  //await create_database();
+  await create_database();
 
   /**
    *  Queries
