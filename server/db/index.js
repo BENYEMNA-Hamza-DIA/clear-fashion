@@ -84,8 +84,8 @@ async function drop_database(){
  * @returns 
  */
 
- module.exports.find_limit = async (query) => {
- //find_limit = async (query) => {
+ module.exports.find_limit = async (query, limit) => {
+ //find_limit = async (query, limit) => {
   //const db = await connect();
   const data = db.collection("products");
   const result = await data.aggregate(query).toArray();
@@ -99,7 +99,6 @@ async function drop_database(){
 */
 
 module.exports.all_products = async () => {
-//all_products = async () => {
   //const db = await connect();
   const data = await db.collection("products");
   const all_products = await data.find().toArray();

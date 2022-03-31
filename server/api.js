@@ -67,6 +67,7 @@ console.log(`📡 Running on port ${PORT}`);
  */
 
  app.get('/products/search', async (request, response) => {
+  await connection();
   // set default values for query parameters
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   if (brand === 'all' && price === 'all') {
