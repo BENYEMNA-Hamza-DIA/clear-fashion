@@ -13,12 +13,29 @@ app.use(helmet());
 
 app.options('*', cors());
 
+console.log(`📡 Running on port ${PORT}`);
+
+/**
+ * Connection
+ */
+
+ async function connection(){
+    await db.connect();
+  }
+
+
 /**
  * app.get('/', (request, response) => {
     response.send({ 'ack': true });
 });
  */
 
+async function main(){
+    await connection();
+    app.listen(PORT);
+    //await request();
+    //await db.close();
+  }
+  
+  main();
 
-console.log(`📡 Running on port ${PORT}`);
-app.listen(PORT);
