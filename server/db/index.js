@@ -114,7 +114,7 @@ module.exports.all_products = async () => {
  * @returns 
  */
 
-module.exports.find_by_id= async (product_id) => {
+module.exports.by_id= async (product_id) => {
 //find_by_id = async (product_id) => {
     //const db = await connect();
     const data = db.collection('products');
