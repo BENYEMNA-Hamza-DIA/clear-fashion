@@ -97,7 +97,7 @@ async function drop_database(){
  * @param {given query} query 
  * @returns 
  */
- module.exports. products_search = async (query, offset = 0, limit = 0) => {
+ module.exports.products_search = async (query, offset = 0, limit = 0) => {
  //products_search = async (query, offset = 0, limit = 0) => {
   var products = await db.collection("products").find(query).skip(offset).limit(limit).toArray()
   //console.log(products)

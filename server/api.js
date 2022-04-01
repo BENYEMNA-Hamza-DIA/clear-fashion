@@ -31,7 +31,7 @@ console.log(`📡 Running on port ${PORT}`);
  * Limit and paginate
  */
 
- //const { nb_limit, paginate } = require('paginate-info');
+ const { nb_limit, paginate } = require('paginate-info');
 
 
 /**
@@ -44,15 +44,23 @@ console.log(`📡 Running on port ${PORT}`);
 });
 
 
+
 /**
  * All products
  * URL : http://localhost:8092/products
+ * URL app : https://server-six-pink.vercel.app/products
  */
 
  app.get('/products', async(request, response) => {
   await connection();
-  let products = await db.all_products();
-  response.send({"all products" : products});
+  
+  const filters = request.query;
+  const count = await db.count_db();
+  const { limit, offset } = nb_limit(parseInt(filters.page), parseInt(filters.size));
+  let products = await db.products_search({}, offset, limit);
+  const meta = paginate(parseInt(filters.page), count, products, parseInt(filters.size));
+
+  response.send({"products" : products, "meta" : meta});
 })
 
 
@@ -65,17 +73,30 @@ console.log(`📡 Running on port ${PORT}`);
 
  app.get('/products/:_id', async (request, response) => {
   await connection();
-  let product = await db.by_id(request.params._id);
-  response.send({"product by id": product})
+  var product = await db.by_id(request.params._id)
+  
+  response.send({"product by id": product});
 })
 
 /**
  * By brand
  */
 
- app.get('/products/brand=', async(request, response) => {
+app.get('/products/brand=', async(request, response) => {
   await connection();
-  let products = await db.by_brand(request.params.brand);
+  var products = await db.products_search({'brand': 'adresse'})
+
+  response.send({"products" : products});
+})
+
+/**
+ * By price limit
+ */
+
+ app.get('/products/price=', async(request, response) => {
+  await connection();
+  var products = await db.products_search({'price': 50})
+
   response.send({"products" : products});
 })
 
@@ -84,28 +105,25 @@ console.log(`📡 Running on port ${PORT}`);
  * Search
  */
 
- app.get('/products/search', async (request, response) => {
-  // set default values for query parameters
-  await connection();
-  const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
-  if (brand === 'all' && price === 'all') {
-      const products = await db.find_limit([{ '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else if (brand === 'all') {
-      const products = await db.find_limit([{ '$match': { 'price': { '$lte': parseInt(price) } } }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else if (price === 'all') {
-      const products = await db.find_limit([{
-          '$match': { 'brand': brand }
-      }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else {
-      const products = await db.find_limit([{ '$match': { 'brand': brand } },
-      { '$match': { 'price': { '$lte': parseInt(price) } } },
-      { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  }
-});
+ app.get('/products/search', async(request, response) => {
+   await connection();
+  const filters = request.query;
+  
+  const brand = filters.brand !== undefined ? filters.brand : ''
+  const price = parseInt(filters.price,10) > 0 ? parseInt(filters.price,10) : ''
+  const limit = parseInt(filters.limit,10) > 0 ? parseInt(filters.limit,10) : 12
+
+  var match = {}
+  if( brand === '' &&  price !== '') match = {price: price} 
+  else if(brand !== '' && price === '') match = {brand: brand}
+  else if(brand !== '' && price !== '') match = {brand: brand, price: price}
+
+  query = [{'$match' : match},{'$sort' : {price:1}},{'$limit' : limit}]
+  
+  var products = await db.find_limit(query)
+
+  response.send(products);
+})
 
 
 /***************************************************
