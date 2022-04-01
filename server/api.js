@@ -59,7 +59,8 @@ console.log(`📡 Running on port ${PORT}`);
 /**
  * By id
  * test_id : 624578c70893460e53714433
- * URL : http://localhost:8092/products/624578c70893460e53714433
+ * URL test: http://localhost:8092/products/624578c70893460e53714433
+ * URL app : https://server-six-pink.vercel.app/624578c70893460e53714433
  */
 
  app.get('/products/:_id', async (request, response) => {
@@ -84,6 +85,7 @@ console.log(`📡 Running on port ${PORT}`);
  */
 
 app.get('/products/search', async(request, response) => {
+  await connection();
   const filters = request.query;
   console.log('filters :>> ', filters);
   
