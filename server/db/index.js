@@ -99,7 +99,7 @@ async function drop_database(){
  */
  module.exports.products_search = async (query, offset = 0, limit = 0) => {
  //products_search = async (query, offset = 0, limit = 0) => {
-  var products = await db.collection("products").find(query).skip(offset).limit(limit).toArray()
+  const products = await db.collection("products").find(query).skip(offset).limit(limit).toArray()
   //console.log(products)
   return products;
 
@@ -235,7 +235,7 @@ async function main(){
   //await drop_database();
   
   //Create database
- // await create_database();
+ //await create_database();
 
   /**
    *  Queries
@@ -252,7 +252,7 @@ async function main(){
    */
   //query_brand = search_brand('adresse');
   //query_price = search_price('50');
-  //await products_search(query_price);
+  //await products_search();
   await close();
 
 };

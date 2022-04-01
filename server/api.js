@@ -48,18 +48,17 @@ console.log(`📡 Running on port ${PORT}`);
 
  app.get('/products', async(request, response) => {
   //await connection();
-
-  const products = await db.products_search({}, offset, limit)
+  const products = await db.products_search()
 
   response.send({"products" : products});
 })
 
 
-/** 
+ /** 
  app.get('/products', async(request, response) => {
   await connection();
   
-  var product = await db.all_products()
+  const product = await db.all_products()
   
   response.send({"product": product});
 })
@@ -69,11 +68,11 @@ console.log(`📡 Running on port ${PORT}`);
  * By id
  * test_id : 62473543421ed444877b9909
  * URL test: http://localhost:8092/products/62473543421ed444877b9909
- * URL app : https://server-six-pink.vercel.app/products/62473543421ed444877b9909
+ * URL app : https://server-sigma-ashen.vercel.app/products/62473543421ed444877b9909
  */
 
  app.get('/products/:_id', async (request, response) => {
-  await connection();
+  //await connection();
   var product = await db.by_id(request.params._id)
   
   response.send({"product by id": product});
@@ -111,7 +110,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 app.get('/products/search', async (request, response) => {
   // set default values for query parameters
-  await connection();
+  //await connection();
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   
   if (brand === 'all' && price === 'all') {
