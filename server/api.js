@@ -28,13 +28,6 @@ console.log(`📡 Running on port ${PORT}`);
  */
 
 /**
- * Limit and paginate
- */
-
- const { nb_limit, paginate } = require('paginate-info');
-
-
-/**
  * Test
  * URL : http://localhost:8092/
  */
@@ -56,9 +49,8 @@ console.log(`📡 Running on port ${PORT}`);
   
   const filters = request.query;
   const count = await db.count_db();
-  const { limit, offset } = nb_limit(parseInt(filters.page), parseInt(filters.size));
+
   let products = await db.products_search({}, offset, limit);
-  const meta = paginate(parseInt(filters.page), count, products, parseInt(filters.size));
 
   response.send({"products" : products, "meta" : meta});
 })
@@ -133,7 +125,7 @@ app.get('/products/brand=', async(request, response) => {
 async function main(){
     await connection();
     app.listen(PORT);
-    //await db.close();
+    await db.close();
   }
 
 main();
