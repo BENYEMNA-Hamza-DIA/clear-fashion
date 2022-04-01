@@ -81,10 +81,10 @@ async function drop_database(){
 /**
  * Aggregate
  * @param {given query} query 
- * @returns 
+ * @returns
  */
 
- module.exports.find_limit = async (query,limit) => {
+ module.exports.find_limit = async (query = [{}]) => {
  //find_limit = async (query, limit) => {
   //const db = await connect();
   const data = db.collection("products");
@@ -92,6 +92,18 @@ async function drop_database(){
   //console.log(result);
   return (result);
 };
+
+/**
+ * Method to filter search
+ * @param {given query} query 
+ * @returns 
+ */
+ module.exports.filter_search = async (query = [{}]) => {
+
+  const result = await db.collection("products").aggregate(query).toArray()
+  return result;
+
+}
 
 
 /** 
@@ -108,8 +120,8 @@ module.exports.all_products = async () => {
 
 
 /**
- * 
- * @param {given id} product_id 
+ * Find a product using an id
+ * @param {given id} product_id
  * @returns 
  */
 
@@ -126,7 +138,7 @@ module.exports.by_id= async (product_id) => {
 /**
  * Find all the products using a brand
  * @param {given brand} brand 
- * @returns 
+ * @returns
  */
 
 module.exports.by_brand = async (brand) => {
@@ -142,7 +154,7 @@ module.exports.by_brand = async (brand) => {
 /**
  * All the products that cost less than a given price
  * @param {given price} price 
- * @returns 
+ * @returns
  */
 
 module.exports.less_than_price = async (price) => {

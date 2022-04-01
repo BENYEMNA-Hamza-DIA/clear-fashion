@@ -27,6 +27,12 @@ console.log(`📡 Running on port ${PORT}`);
  * Request API 
  */
 
+/**
+ * Limit and paginate
+ */
+
+ const { nb_limit, paginate } = require('paginate-info');
+
 
 /**
  * Test
@@ -77,27 +83,30 @@ console.log(`📡 Running on port ${PORT}`);
  * Search
  */
 
- app.get('/products/search', async (request, response) => {
-  await connection();
-  // set default values for query parameters
-  const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
-  if (brand === 'all' && price === 'all') {
-      const products = await db.find_limit([{ '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else if (brand === 'all') {
-      const products = await db.find_limit([{ '$match': { 'price': { '$lte': parseInt(price) } } }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else if (price === 'all') {
-      const products = await db.find_limit([{
-          '$match': { 'brand': brand }
-      }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  } else {
-      const products = await db.find_limit([{ '$match': { 'brand': brand } },
-      { '$match': { 'price': { '$lte': parseInt(price) } } },
-      { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
-      response.send(products);
-  }
+app.get('/products/search', async(request, response) => {
+  const filters = request.query;
+  console.log('filters :>> ', filters);
+  
+  const brand = filters.brand !== undefined ? filters.brand : ''
+  const price = parseInt(filters.price,10) > 0 ? parseInt(filters.price,10) : ''
+  const limit = parseInt(filters.limit,10) > 0 ? parseInt(filters.limit,10) : 12
+
+  var match = {}
+  if( brand === '' &&  price !== '') match = {price: price} 
+  else if(brand !== '' && price === '') match = {brand: brand}
+  else if(brand !== '' && price !== '') match = {brand: brand, price: price}
+
+  query = [
+    {'$match' : match},
+    {'$sort' : {price:1}},
+    {'$limit' : limit}
+    ]
+  console.log('query :>> ', query);
+  
+  var filteredProducts = await db.find_limit(query);
+
+  console.log('filteredProducts.length :>> ', filteredProducts.length);
+  response.send(filteredProducts);
 })
 
 
