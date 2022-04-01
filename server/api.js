@@ -37,14 +37,15 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-
+// server : https://server-sigma-ashen.vercel.app
 
 /**
  * All products
  * URL : http://localhost:8092/products
- * URL app : https://server-six-pink.vercel.app/products
+ * URL app : https://server-sigma-ashen.vercel.app/products
  */
-/** 
+
+
  app.get('/products', async(request, response) => {
   //await connection();
 
@@ -52,8 +53,9 @@ console.log(`📡 Running on port ${PORT}`);
 
   response.send({"products" : products});
 })
-*/
 
+
+/** 
  app.get('/products', async(request, response) => {
   await connection();
   
@@ -61,7 +63,7 @@ console.log(`📡 Running on port ${PORT}`);
   
   response.send({"product": product});
 })
-
+*/
 
 /**
  * By id
