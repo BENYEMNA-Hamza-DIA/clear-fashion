@@ -27,6 +27,7 @@ console.log(`📡 Running on port ${PORT}`);
  * Request API 
  */
 
+
 /**
  * Test
  * URL : http://localhost:8092/
@@ -52,7 +53,7 @@ console.log(`📡 Running on port ${PORT}`);
 
   let products = await db.products_search({}, offset, limit);
 
-  response.send({"products" : products, "meta" : meta});
+  response.send({"products" : products});
 })
 
 
@@ -60,7 +61,7 @@ console.log(`📡 Running on port ${PORT}`);
  * By id
  * test_id : 62473543421ed444877b9909
  * URL test: http://localhost:8092/products/62473543421ed444877b9909
- * URL app : https://server-six-pink.vercel.app/62473543421ed444877b9909
+ * URL app : https://server-six-pink.vercel.app/products/62473543421ed444877b9909
  */
 
  app.get('/products/:_id', async (request, response) => {
@@ -95,10 +96,13 @@ app.get('/products/brand=', async(request, response) => {
 
 /**
  * Search
+ * 
+ * URL app : https://server-six-pink.vercel.app/products/search?brand=montlimart
+ * 
  */
 
  app.get('/products/search', async(request, response) => {
-   await connection();
+  await connection();
   const filters = request.query;
   
   const brand = filters.brand !== undefined ? filters.brand : ''
@@ -125,7 +129,7 @@ app.get('/products/brand=', async(request, response) => {
 async function main(){
     await connection();
     app.listen(PORT);
-    await db.close();
+    //await db.close();
   }
 
 main();
