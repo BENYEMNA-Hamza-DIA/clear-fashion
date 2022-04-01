@@ -37,12 +37,12 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-// server : https://server-sigma-ashen.vercel.app
+// server : https://server-seven-lemon.vercel.app
 
 /**
  * All products
  * URL : http://localhost:8092/products
- * URL app : https://server-sigma-ashen.vercel.app/products
+ * URL app : https://server-seven-lemon.vercel.app/products
  */
 
 
@@ -56,7 +56,6 @@ console.log(`📡 Running on port ${PORT}`);
 
  /** 
  app.get('/products', async(request, response) => {
-  await connection();
   
   const product = await db.all_products()
   
@@ -68,7 +67,7 @@ console.log(`📡 Running on port ${PORT}`);
  * By id
  * test_id : 62473543421ed444877b9909
  * URL test: http://localhost:8092/products/62473543421ed444877b9909
- * URL app : https://server-sigma-ashen.vercel.app/products/62473543421ed444877b9909
+ * URL app : https://server-seven-lemon.vercel.app/products/62473543421ed444877b9909
  */
 
  app.get('/products/:_id', async (request, response) => {
@@ -82,7 +81,7 @@ console.log(`📡 Running on port ${PORT}`);
 /**
  * Search
  * 
- * URL app : https://server-six-pink.vercel.app/products/search?brand=montlimart
+ * URL app : https://server-seven-lemon.vercel.app/products/search?brand=montlimart
  * 
  */
 
@@ -136,4 +135,8 @@ app.get('/products/search', async (request, response) => {
 /***************************************************
  * Listen PORT
  */
-app.listen(PORT);
+
+async function main(){
+  await connection();
+  app.listen(PORT);
+}
