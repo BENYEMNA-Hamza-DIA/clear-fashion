@@ -1,6 +1,5 @@
 require('dotenv').config();
 const {MongoClient} = require('mongodb');
-const {ExplainVerbosity} = require('mongodb');
 
 const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'ClearFashion';
@@ -93,6 +92,40 @@ async function drop_database(){
   return (result);
 };
 
+/**
+ * Method to search
+ * @param {given query} query 
+ * @returns 
+ */
+ module.exports. products_search = async (query, offset = 0, limit = 0) => {
+ //products_search = async (query, offset = 0, limit = 0) => {
+  var products = await db.collection("products").find(query).skip(offset).limit(limit).toArray()
+  //console.log(products)
+  return products;
+
+}
+
+/**
+ * Search usig a brand
+ * @param {given brand} brand 
+ */
+
+ function search_brand(brand){
+  return {brand: `${brand}`}
+}
+
+/**
+ * Search using a price
+ * @param {given price } price 
+ */
+function search_price(price){
+  return {price: {"$lte" : parseInt(price,10)}}
+}
+
+
+module.exports.count_db = async () => {
+  return await db.collection("products").estimatedDocumentCount();
+}
 
 
 /** 
@@ -139,6 +172,8 @@ module.exports.by_brand = async (brand) => {
   //console.log(brand_filtered);
   return (brand_filtered);
 }
+
+
 
 /**
  * All the products that cost less than a given price
@@ -197,10 +232,10 @@ async function main(){
 
   //To refresh the database, we drop then create. BAD IDEA !
   //Delete database
-  await drop_database();
+  //await drop_database();
   
   //Create database
-  await create_database();
+ // await create_database();
 
   /**
    *  Queries
@@ -212,8 +247,15 @@ async function main(){
   //await sorted_price_asc();
   //await sorted_price_desc();
 
+  /**
+   * Search
+   */
+  //query_brand = search_brand('adresse');
+  //query_price = search_price('50');
+  //await products_search(query_price);
   await close();
+
 };
 
-//main();
+main();
 
