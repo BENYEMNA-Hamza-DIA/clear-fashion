@@ -45,23 +45,23 @@ console.log(`📡 Running on port ${PORT}`);
  * URL app : https://server-seven-lemon.vercel.app/products
  */
 
-
+/** 
  app.get('/products', async(request, response) => {
 
   const products = await db.products_search()
 
   response.send({"products" : products});
 })
+*/
 
-
- /** 
+ 
  app.get('/products', async(request, response) => {
   
   const product = await db.all_products()
   
   response.send({"product": product});
 })
-*/
+
 
 /**
  * By id
