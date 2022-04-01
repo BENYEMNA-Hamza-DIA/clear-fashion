@@ -93,17 +93,6 @@ async function drop_database(){
   return (result);
 };
 
-/**
- * Method to filter search
- * @param {given query} query 
- * @returns 
- */
- module.exports.filter_search = async (query = [{}]) => {
-
-  const result = await db.collection("products").aggregate(query).toArray()
-  return result;
-
-}
 
 
 /** 

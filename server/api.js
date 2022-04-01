@@ -31,7 +31,7 @@ console.log(`📡 Running on port ${PORT}`);
  * Limit and paginate
  */
 
- const { nb_limit, paginate } = require('paginate-info');
+ //const { nb_limit, paginate } = require('paginate-info');
 
 
 /**
@@ -58,9 +58,9 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * By id
- * test_id : 624578c70893460e53714433
- * URL test: http://localhost:8092/products/624578c70893460e53714433
- * URL app : https://server-six-pink.vercel.app/624578c70893460e53714433
+ * test_id : 62473543421ed444877b9909
+ * URL test: http://localhost:8092/products/62473543421ed444877b9909
+ * URL app : https://server-six-pink.vercel.app/62473543421ed444877b9909
  */
 
  app.get('/products/:_id', async (request, response) => {
@@ -84,32 +84,28 @@ console.log(`📡 Running on port ${PORT}`);
  * Search
  */
 
-app.get('/products/search', async(request, response) => {
+ app.get('/products/search', async (request, response) => {
+  // set default values for query parameters
   await connection();
-  const filters = request.query;
-  console.log('filters :>> ', filters);
-  
-  const brand = filters.brand !== undefined ? filters.brand : ''
-  const price = parseInt(filters.price,10) > 0 ? parseInt(filters.price,10) : ''
-  const limit = parseInt(filters.limit,10) > 0 ? parseInt(filters.limit,10) : 12
-
-  var match = {}
-  if( brand === '' &&  price !== '') match = {price: price} 
-  else if(brand !== '' && price === '') match = {brand: brand}
-  else if(brand !== '' && price !== '') match = {brand: brand, price: price}
-
-  query = [
-    {'$match' : match},
-    {'$sort' : {price:1}},
-    {'$limit' : limit}
-    ]
-  console.log('query :>> ', query);
-  
-  var filteredProducts = await db.find_limit(query);
-
-  console.log('filteredProducts.length :>> ', filteredProducts.length);
-  response.send(filteredProducts);
-})
+  const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
+  if (brand === 'all' && price === 'all') {
+      const products = await db.find_limit([{ '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
+      response.send(products);
+  } else if (brand === 'all') {
+      const products = await db.find_limit([{ '$match': { 'price': { '$lte': parseInt(price) } } }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
+      response.send(products);
+  } else if (price === 'all') {
+      const products = await db.find_limit([{
+          '$match': { 'brand': brand }
+      }, { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
+      response.send(products);
+  } else {
+      const products = await db.find_limit([{ '$match': { 'brand': brand } },
+      { '$match': { 'price': { '$lte': parseInt(price) } } },
+      { '$sort': { "price": parseInt(sort) } }, { '$limit': parseInt(limit) }, { '$skip': parseInt(skip) }]);
+      response.send(products);
+  }
+});
 
 
 /***************************************************
@@ -119,7 +115,8 @@ app.get('/products/search', async(request, response) => {
 async function main(){
     await connection();
     app.listen(PORT);
+    //await db.close();
   }
 
-  main();
+main();
 
