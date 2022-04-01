@@ -47,11 +47,8 @@ console.log(`📡 Running on port ${PORT}`);
 
  app.get('/products', async(request, response) => {
   await connection();
-  
-  const filters = request.query;
-  const count = await db.count_db();
 
-  let products = await db.products_search({}, offset, limit);
+  let products = await db.products_search({}, offset, limit)
 
   response.send({"products" : products});
 })
@@ -69,28 +66,6 @@ console.log(`📡 Running on port ${PORT}`);
   var product = await db.by_id(request.params._id)
   
   response.send({"product by id": product});
-})
-
-/**
- * By brand
- */
-
-app.get('/products/brand=', async(request, response) => {
-  await connection();
-  var products = await db.products_search({'brand': 'adresse'})
-
-  response.send({"products" : products});
-})
-
-/**
- * By price limit
- */
-
- app.get('/products/price=', async(request, response) => {
-  await connection();
-  var products = await db.products_search({'price': 50})
-
-  response.send({"products" : products});
 })
 
 
