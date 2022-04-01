@@ -47,7 +47,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 
  app.get('/products', async(request, response) => {
-  //await connection();
+
   const products = await db.products_search()
 
   response.send({"products" : products});
@@ -72,7 +72,7 @@ console.log(`📡 Running on port ${PORT}`);
  */
 
  app.get('/products/:_id', async (request, response) => {
-  //await connection();
+
   var product = await db.by_id(request.params._id)
   
   response.send({"product by id": product});
@@ -88,7 +88,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  app.get('/products/search', async(request, response) => {
-  await connection();
+
   const filters = request.query;
   
   const brand = filters.brand !== undefined ? filters.brand : ''
@@ -110,7 +110,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 app.get('/products/search', async (request, response) => {
   // set default values for query parameters
-  //await connection();
+
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   
   if (brand === 'all' && price === 'all') {
@@ -134,13 +134,6 @@ app.get('/products/search', async (request, response) => {
 
 
 /***************************************************
- * main
+ * Listen PORT
  */
-
-async function main(){
-    await connection();
-    app.listen(PORT);
-    //await db.close();
-  }
-
-main();
+app.listen(PORT);

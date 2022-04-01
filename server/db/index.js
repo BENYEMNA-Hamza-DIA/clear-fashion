@@ -85,7 +85,7 @@ async function drop_database(){
 
  module.exports.find_limit = async (query, limit) => {
  //find_limit = async (query, limit) => {
-  //const db = await connect();
+  const db = await connect();
   const data = db.collection("products");
   const result = await data.aggregate(query).toArray();
   //console.log(result);
@@ -99,6 +99,7 @@ async function drop_database(){
  */
  module.exports.products_search = async (query, offset = 0, limit = 0) => {
  //products_search = async (query, offset = 0, limit = 0) => {
+  const db = await connect();
   const products = await db.collection("products").find(query).skip(offset).limit(limit).toArray()
   //console.log(products)
   return products;
@@ -133,7 +134,7 @@ module.exports.count_db = async () => {
 */
 
 module.exports.all_products = async () => {
-  //const db = await connect();
+  const db = await connect();
   const data = await db.collection("products");
   const all_products = await data.find().toArray();
   console.log(all_products);
@@ -149,7 +150,7 @@ module.exports.all_products = async () => {
 
 module.exports.by_id= async (product_id) => {
 //find_by_id = async (product_id) => {
-    //const db = await connect();
+    const db = await connect();
     const data = db.collection('products');
     const product = await data.find({'_id': ObjectId(product_id)}).toArray();
     //console.log("Products with the id '" + product_id + "' :");
@@ -165,7 +166,7 @@ module.exports.by_id= async (product_id) => {
 
 module.exports.by_brand = async (brand) => {
 //by_brand = async (brand) => {
-  //const db = await connect();
+  const db = await connect();
   const data = db.collection('products');
   const brand_filtered = await data.find({'brand' : brand }).toArray();
   //console.log("Products from the brand " + brand + ":");
@@ -183,7 +184,7 @@ module.exports.by_brand = async (brand) => {
 
 module.exports.less_than_price = async (price) => {
 //less_than_price = async (price) => {
-  //const db = await connect();
+  const db = await connect();
   const data = db.collection('products');
   const price_limited = await data.find({'price' : {'$lte' : parseInt(price,10)}}).toArray();
   //console.log("Products that cost less than " + price + ":");
@@ -198,7 +199,7 @@ module.exports.less_than_price = async (price) => {
 
 module.exports.sorted_price_asc = async () => {
 //sorted_price_asc = async () => {
-  //const db = await connect();
+  const db = await connect();
   const data = db.collection('products')
   const sorted_asc = await data.find().sort({'price' : 1}).toArray();
   //console.log('Products sorted by ascending price:');
@@ -213,7 +214,7 @@ module.exports.sorted_price_asc = async () => {
 
 module.exports.sorted_price_desc = async () => {
  //sorted_price_desc = async () => {
-  //const db = await connect();
+  const db = await connect();
   const data = db.collection('products')
   const sorted_desc = await data.find().sort({'price' : -1}).toArray();
   //console.log('Products sorted by descending price:');
@@ -227,8 +228,6 @@ module.exports.sorted_price_desc = async () => {
 */
 
 async function main(){
-
-  await connect();
 
   //To refresh the database, we drop then create. BAD IDEA !
   //Delete database
@@ -253,7 +252,6 @@ async function main(){
   //query_brand = search_brand('adresse');
   //query_price = search_price('50');
   //await products_search();
-  await close();
 
 };
 
