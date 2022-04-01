@@ -140,3 +140,4 @@ async function main(){
   await connection();
   app.listen(PORT);
 }
+main();
