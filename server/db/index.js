@@ -84,7 +84,7 @@ async function drop_database(){
  * @returns 
  */
 
- module.exports.find_limit = async (query, limit) => {
+ module.exports.find_limit = async (query,limit) => {
  //find_limit = async (query, limit) => {
   //const db = await connect();
   const data = db.collection("products");
@@ -133,7 +133,7 @@ module.exports.by_brand = async (brand) => {
 //by_brand = async (brand) => {
   //const db = await connect();
   const data = db.collection('products');
-  const brand_filtered = await data.find({'brand' : `${brand}`}).toArray();
+  const brand_filtered = await data.find({'brand' : brand }).toArray();
   //console.log("Products from the brand " + brand + ":");
   //console.log(brand_filtered);
   return (brand_filtered);
