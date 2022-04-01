@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {MongoClient} = require('mongodb');
+const {MongoClient, ExplainVerbosity} = require('mongodb');
 
 const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'ClearFashion';
@@ -66,12 +66,12 @@ async function create_database(){
 /**
  * Drop the database
  */
-/**
+
 async function drop_database(){
   await db.collection("products").drop();
   console.log('Database refresh ...')
 }
-*/
+
 
 /***********************************************************
  * Methods for query
@@ -93,6 +93,7 @@ async function drop_database(){
   return (result);
 };
 
+ 
 /**
  * Method to search
  * @param {given query} query 
@@ -151,7 +152,7 @@ module.exports.all_products = async () => {
  */
 
 module.exports.by_id= async (product_id) => {
-//find_by_id = async (product_id) => {
+//by_id = async (product_id) => {
     //const db = await connect();
     const data = db.collection('products');
     const product = await data.find({'_id': ObjectId(product_id)}).toArray();
@@ -237,13 +238,13 @@ async function main(){
   //await drop_database();
   
   //Create database
- //await create_database();
+  //await create_database();
 
   /**
    *  Queries
    */
   //await all_products();
-  //await by_id("624575ff6e2f73db99c69000");
+  //await by_id("624770dc476e88ed75be01b1");
   //await by_brand('adresse');
   //await less_than_price(50);
   //await sorted_price_asc();
@@ -254,11 +255,11 @@ async function main(){
    */
   //query_brand = search_brand('adresse');
   //query_price = search_price('50');
-  //await products_search();
+  //await products_search(query_brand);
 
-  //await close();
+  await close();
 
 };
 
-//main();
+main();
 

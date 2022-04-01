@@ -37,7 +37,9 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-// server : https://server-seven-lemon.vercel.app
+// server : https://server-omega-rust.vercel.app
+
+// client : https://v2-ochre.vercel.app
 
 /**
  * All products
@@ -56,8 +58,9 @@ console.log(`📡 Running on port ${PORT}`);
 
  
  app.get('/products', async(request, response) => {
-  
-  const product = await db.all_products()
+  await connection();
+
+  const product = await db.all_products();
   
   response.send({"product": product});
 })
@@ -71,8 +74,9 @@ console.log(`📡 Running on port ${PORT}`);
  */
 
  app.get('/products/:_id', async (request, response) => {
+  await connection();
 
-  var product = await db.by_id(request.params._id)
+  let product = await db.by_id(request.params._id);
   
   response.send({"product by id": product});
 })
