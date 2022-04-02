@@ -1,52 +1,40 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
-// client : https://hamza-client.vercel.app
+// current products on the page
+let currentProducts = [];
+let favorite_list = [];
+let currentPagination = {};
+currentPagination['currentSize'] = 12;
+currentPagination['currentPage'] = 1;
+currentPagination['paginationChoice'] = "actual"
+let currentBrand = 'all';
+let currentMaxPrice = 1000;
+let currentSort = 1;
 
+// instantiate the selectors
+const selectShow = document.querySelector('#show-select');
+const selectPagePrevious = document.querySelector('#previous-page');
+const selectPageNext = document.querySelector('#next-page');
+const selectBrand = document.querySelector('#brand-select');
+const sectionProducts = document.querySelector('#products');
+const selectFilterPrice = document.querySelector('#filter-price-select')
+const selectFilterDate = document.querySelector('#filter-date-select')
+const selectFilterFavorite = document.querySelector('#filter-favorite-select')
+const selectSort = document.querySelector('#sort-select');
 
-/**
- * Current page
- */
-
- let currentProducts = [];
- let favorite_list = [];
- let currentPagination = {};
- currentPagination['currentSize'] = 12;
- currentPagination['currentPage'] = 1;
- currentPagination['paginationChoice'] = "actual"
- let currentBrand = 'all';
- let currentMaxPrice = 1000;
- let currentSort = 1;
-
-
-/**
- * Query selector
- */
- const selectShow = document.querySelector('#show-select');
- const selectPagePrevious = document.querySelector('#previous-page');
- const selectPageNext = document.querySelector('#next-page');
- const selectBrand = document.querySelector('#brand-select');
- const sectionProducts = document.querySelector('#products');
- const selectFilterPrice = document.querySelector('#filter-price-select')
- const selectFilterDate = document.querySelector('#filter-date-select')
- const selectFilterFavorite = document.querySelector('#filter-favorite-select')
- const selectSort = document.querySelector('#sort-select');
- 
- const spanNbProducts = document.querySelector('#nbProducts');
- const spanNbNewProducts = document.querySelector('#nbNewProducts');
- const spanp50 = document.querySelector('#p50');
- const spanp90 = document.querySelector('#p90');
- const spanp95 = document.querySelector('#p95');
- const spanLastReleased = document.querySelector('#lastReleased');
-
+const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbNewProducts = document.querySelector('#nbNewProducts');
+const spanp50 = document.querySelector('#p50');
+const spanp90 = document.querySelector('#p90');
+const spanp95 = document.querySelector('#p95');
+const spanLastReleased = document.querySelector('#lastReleased');
 
 /**
- * Set products and meta for the products of the current page
- * 
+ * Set global value
  * @param {Array} result - products to display
  * @param {Object} meta - pagination meta info
  */
-
 const setCurrentProducts = ({ result, meta }) => {
     currentProducts = result;
     currentPagination = meta;
@@ -60,54 +48,54 @@ const setCurrentProducts = ({ result, meta }) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
+const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
+    if (isNaN(price)) {
+        currentMaxPrice = 1000;
+        price = currentMaxPrice
+    }
+    if (page == "actual") { currentPagination.currentPage = 1 }
+    if (page == "next") { currentPagination.currentPage = currentPagination.currentPage + 1 }
+    if (page == "previous") { currentPagination.currentPage = currentPagination.currentPage - 1 }
+    if (currentPagination.currentPage < 1) { currentPagination.currentPage = 1 }
+    let pageNumber = currentPagination.currentPage
+    let skip = (pageNumber - 1) * size;
+    let limit = size * pageNumber;
+    console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
+    try {
+        let response = await fetch(
+            `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+        );
+        let body = await response.json();
+        if (body.length == 0) {
+            currentPagination.currentPage = currentPagination.currentPage - 1
+            let pageNumber = currentPagination.currentPage
+            let skip = (pageNumber - 1) * size;
+            let limit = size * pageNumber;
+            console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
+            response = await fetch(
+                `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+            );
+            body = await response.json()
+        }
+        console.log(body)
+        currentProducts = body;
+        //currentPagination['currentPage'] = 1;
+        currentPagination['currentSize'] = size;
+        currentBrand = brand
+        currentMaxPrice = price
+        currentSort = sort;
+        if (body.success !== true) {
+            console.error(body);
+            return { currentProducts, currentPagination };
+        }
+        //return body.data
 
- const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
-  if (isNaN(price)) {
-      currentMaxPrice = 1000;
-      price = currentMaxPrice
-  }
-  if (page == "actual") { currentPagination.currentPage = 1 }
-  if (page == "next") { currentPagination.currentPage = currentPagination.currentPage + 1 }
-  if (page == "previous") { currentPagination.currentPage = currentPagination.currentPage - 1 }
-  if (currentPagination.currentPage < 1) { currentPagination.currentPage = 1 }
-  let pageNumber = currentPagination.currentPage
-  let skip = (pageNumber - 1) * size;
-  let limit = size * pageNumber;
-  console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
-  try {
-      let response = await fetch(
-          `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
-      );
-      let body = await response.json();
-      if (body.length == 0) {
-          currentPagination.currentPage = currentPagination.currentPage - 1
-          let pageNumber = currentPagination.currentPage
-          let skip = (pageNumber - 1) * size;
-          let limit = size * pageNumber;
-          console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
-          response = await fetch(
-              `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
-          );
-          body = await response.json()
-      }
-      console.log(body)
-      currentProducts = body;
+        return body;
 
-      currentPagination['currentSize'] = size;
-      currentBrand = brand
-      currentMaxPrice = price
-      currentSort = sort;
-      if (body.success !== true) {
-          console.error(body);
-          return { currentProducts, currentPagination };
-      }
-
-      return body;
-
-  } catch (error) {
-      console.error(error);
-      return { currentProducts, currentPagination };
-  }
+    } catch (error) {
+        console.error(error);
+        return { currentProducts, currentPagination };
+    }
 };
 
 
@@ -115,99 +103,93 @@ const setCurrentProducts = ({ result, meta }) => {
  * Render list of products
  * @param  {Array} products
  */
-
- const renderProducts = products => {
-  const fragment = document.createDocumentFragment();
-  const div = document.createElement('div');
-  let template = `<div class="cards">`
-  template += products
-      .map(product => {
-          if (favorite_list.includes(product._id)) {
-              return `
-              <div class="card" id=${product._id}>
-              
-               <h5 class="brand-name">${product.brand}</h5>
-              <div class="image-container">
-                  <div class="first">
-                      <div class="d-flex justify-content-between align-items-center">
-                  </div>
-                  </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
-              </div>
-              <div class="product-detail-container p-2">
-                      <div class="d-flex justify-content-between align-items-center">
-                          <a href="${product.link}">${product.name}</br></a>
-                          <a class="new-price">${product.price}€</a>
-                      </div>
-  <button class="wishlist" style="border: none;color:#FF8773" onclick= DeleteFavorite('${product._id}')>${"&#10084;"}</button> 
-                  </div>
-       
-    </div>`;
-          }
-          else {
-              return `
-    <div class="card"   id=${product._id}>
-                      <h5 class="brand-name">${product.brand}</h5>
+const renderProducts = products => {
+    const fragment = document.createDocumentFragment();
+    const div = document.createElement('div');
+    let template = `<div class="cards">`
+    template += products
+        .map(product => {
+            if (favorite_list.includes(product._id)) {
+                return `
+                <div class="card" id=${product._id}>
+                
+                 <h5 class="brand-name">${product.brand}</h5>
+                <div class="image-container">
+                    <div class="first">
+                        <div class="d-flex justify-content-between align-items-center">
+                    </div>
+                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+                </div>
+                <div class="product-detail-container p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="${product.link}">${product.name}</br></a>
+                            <a class="new-price">${product.price}€</a>
+                        </div>
+    <button class="wishlist" style="border: none;color:#FF8773" onclick= DeleteFavorite('${product._id}')>${"&#10084;"}</button> 
+                    </div>
+         
+      </div>`;
+            }
+            else {
+                return `
+      <div class="card"   id=${product._id}>
+                        <h5 class="brand-name">${product.brand}</h5>
 <div class="image-container" >
-                  <div class="first">
-                      <div class="d-flex justify-content-between align-items-center"> 
-                              </div>
-                          
-                  </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
-              </div><div class="product-detail-container p-2">
-                      <div class="d-flex justify-content-between align-items-center">
-                          <a href="${product.link}">${product.name}</br></a>
-                          <a class="new-price">${product.price}€</a>
-                      </div>
+                    <div class="first">
+                        <div class="d-flex justify-content-between align-items-center"> 
+                                </div>
+                            
+                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+                </div><div class="product-detail-container p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="${product.link}">${product.name}</br></a>
+                            <a class="new-price">${product.price}€</a>
+                        </div>
 <button class="wishlist" style="border: none; color:#8FB8C1" onclick= AddFavorite('${product._id}')>${"&#10084;"}</button>
-                  </div>
-       
-    </div>`;
-          }
-      }).join('');
-  template += `</div>`
+                    </div>
+         
+      </div>`;
+            }
+        }).join('');
+    template += `</div>`
 
-  div.innerHTML = template;
-  fragment.appendChild(div);
-  sectionProducts.innerHTML = '<h2></br><i class="fa-solid fa-shirt"></i> Products:</h2>';
-
-  sectionProducts.appendChild(fragment);
+    div.innerHTML = template;
+    fragment.appendChild(div);
+    sectionProducts.innerHTML = '<h2></br><i class="fa-solid fa-shirt"></i> Products:</h2>';
+    //sectionProducts.appendChild(`<div class="cards">`);
+    sectionProducts.appendChild(fragment);
+    //sectionProducts.appendChild(`</div>`)
 
 };
 
 
-/**
- * Favorite list
- * 
- * @param {*} _id 
- */
-
 function AddFavorite(_id) {
+    //console.log(uuid)
     favorite_list.push(_id);
+    //console.log(favorite_list)
     render(currentProducts, currentPagination)
 }
 
 function DeleteFavorite(_id) {
+    //console.log(uuid)
+    //favorite_list.push(_id);
+    //console.log(favorite_list)
     render(currentProducts, currentPagination)
 }
-
 
 /**
  * Render page selector
  * @param  {Object} pagination
  */
-
 function renderPagination() {
-  const options = ` <button style="border: none; background : #64c8dc; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
+    const options = ` <button style="border: none; background : none; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
+
     selectPage.innerHTML = options;
     selectPage.selectedIndex = 0;
 };
 
 
-/**
- * List of brands name filter
- * @param {*} products 
- */
-
+// Show the list of brand names to filter
 const renderBrands = products => {
 
     const options = `<option value="all">all brands</option>
@@ -223,7 +205,6 @@ const renderBrands = products => {
     selectBrand.selectedIndex = i;
 };
 
-
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -231,12 +212,29 @@ const renderBrands = products => {
 function renderIndicators() {
 
     spanNbProducts.innerHTML = currentProducts.length;
-
+    //spanNbNewProducts.innerHTML = CountNewProducts();
     spanp50.innerHTML = Percentile(0.50);
     spanp90.innerHTML = Percentile(0.90);
     spanp95.innerHTML = Percentile(0.95);
-
+    //spanLastReleased.innerHTML = LastReleased();
 };
+
+function LastReleased() {
+    var sortedProducts = SortProducts(currentProducts, "date-asc")
+    return sortedProducts[0].released
+}
+
+function CountNewProducts() {
+    var count = 0
+    for (var product of currentProducts) {
+        let today = new Date('2022-01-30')
+        let released = new Date(product.released);
+        if (today - released < 14 * 1000 * 60 * 60 * 24) {
+            count += 1
+        }
+    }
+    return count
+}
 
 function Percentile(p) {
     let clone = [...currentProducts]
@@ -247,59 +245,36 @@ function Percentile(p) {
     return percentile.toString() + "&euro;"
 }
 
-function LastReleased() {
-  var sortedProducts = SortProducts(currentProducts, "date-asc")
-  return sortedProducts[0].released
-}
-
-function CountNewProducts() {
-  var count = 0
-  for (var product of currentProducts) {
-      let today = new Date('2022-01-30')
-      let released = new Date(product.released);
-      if (today - released < 14 * 1000 * 60 * 60 * 24) {
-          count += 1
-      }
-  }
-  return count
-}
-
-
 const render = (products) => {
     renderBrands(products);
     renderProducts(products);
+    //renderPagination();
     renderIndicators();
 
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/******************************************************************************
- * Features
- */
+// Select the number of products to display
+
 
 selectShow.addEventListener('change', event => {
     fetchProducts(parseInt(event.target.value))
-        .then(() => render(currentProducts));
+        .then(() => render(currentProducts)); //, pagination
 });
 
-
-/**
- * Feature 1 : Browse pages
- */
+//Feature 1 - Browse pages
 
 selectPagePrevious.addEventListener('click', event => {
     fetchProducts(currentPagination.currentSize, "previous")
-        .then(() => render(currentProducts)); 
+        .then(() => render(currentProducts)); //, pagination
 });
 selectPageNext.addEventListener('click', event => {
     fetchProducts(currentPagination.currentSize, "next")
-        .then(() => render(currentProducts)); 
+        .then(() => render(currentProducts)); //, pagination
 });
 
-
-/**
- * Feature 2 : Filter by brands
- */
+//Feature 2 - Filter by brands
 
 
 selectBrand.addEventListener('change', event => {
@@ -308,71 +283,21 @@ selectBrand.addEventListener('change', event => {
 })
 
 
-/** 
- * Feature 3 : Filter by reasonnable price 
- */
-
- selectByReasonnablePrice.addEventListener('change', async (event) => {
-  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
-
-  if (event.target.value == "By reasonable price"){
-    products.result = products.result.filter(product => product.price <= 50);
-  }
-
-  setCurrentProducts(products);
-  render(currentProducts, currentPagination);
-
-});
-
-
-/**
- * Feature 4 : Filter by reasonable price
- 
+//Feature 4 - Filter by reasonable price
 
 selectFilterPrice.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, parseInt(event.target.value))
         .then(() => render(currentProducts));
 })
 
-
-/**
- * Feature 5 : Sort by price
- 
+//Feature 5 - Sort by price
 
 selectSort.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, currentMaxPrice, parseInt(event.target.value))
         .then(() => render(currentProducts));
 })
 
-/** Feature 5 & 6 : Sort by date and price (asc and desc)
- * 
- 
-
- selectSort.addEventListener('change', async (event) => {
-  switch (event.target.value) {
-    case 'price-asc':
-      currentProducts = currentProducts.sort((p1, p2) => { return p1.price - p2.price; });
-      break;
-    case 'price-desc':
-      currentProducts = currentProducts.sort((p1, p2) => { return p2.price - p1.price; });
-      break;
-    case 'date-asc':
-      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p2.released) - new Date(p1.released); });
-      break;
-    case 'date-desc':
-      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p1.released) - new Date(p2.released); });
-      break;
-    default:
-      break;
-  }
-  render(currentProducts, currentPagination);
-});
-
-
-
-/**
- * Feature 14 - Filter by favorite
- */
+//Feature 14 - Filter by favorite
 
 selectFilterFavorite.addEventListener('change', event => {
     fetchProducts()
@@ -393,8 +318,10 @@ function filterFavorite(currentProducts, selector) {
                 filteredProducts.push(product)
             }
         }
+
         return filteredProducts
     }
+
 }
 
 document.addEventListener('DOMContentLoaded', () =>
