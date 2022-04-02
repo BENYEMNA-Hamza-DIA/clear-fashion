@@ -1,5 +1,10 @@
 /* eslint-disable no-console, no-process-exit */
 
+/**
+ * Note : this sandbox merge all the 3 for different brand that 
+ * I have made for each brand and export it to a json file that 
+ * is used to create a database in Mongo Atlas 
+ */
 /** Link of the brands :
  * 
  * https://adresse.paris/630-toute-la-collection
@@ -11,7 +16,8 @@
 const fetch = require("node-fetch");
 const fs = require('fs');
 
-/** Sources:
+/** 
+ * Sources:
  */
 
 const source_adresse = require('./sources/adresse');
@@ -105,6 +111,8 @@ async function sandbox () {
 
     console.log(total_products.length,'total products scrapped')
     console.log('Scrapping was sucessfully done');
+    
+    
     /**
      * Write a json file with all the products
      */
