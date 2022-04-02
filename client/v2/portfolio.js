@@ -15,7 +15,7 @@
  currentPagination['currentPage'] = 1;
  currentPagination['paginationChoice'] = "actual"
  let currentBrand = 'all';
- let currentMaxPrice = 600;
+ let currentMaxPrice = 1000;
  let currentSort = 1;
 
 
@@ -34,11 +34,10 @@
  const selectSort = document.querySelector('#sort-select');
  
  const spanNbProducts = document.querySelector('#nbProducts');
- const spanNbNewProducts = document.querySelector('#nbNewProducts');
  const spanp50 = document.querySelector('#p50');
  const spanp90 = document.querySelector('#p90');
  const spanp95 = document.querySelector('#p95');
- const spanLastReleased = document.querySelector('#lastReleased');
+
 
 
 /**
@@ -64,7 +63,7 @@ const setCurrentProducts = ({ result, meta }) => {
 
  const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
   if (isNaN(price)) {
-      currentMaxPrice = 600;
+      currentMaxPrice = 1000;
       price = currentMaxPrice
   }
   if (page == "actual") { currentPagination.currentPage = 1 }
@@ -198,7 +197,7 @@ function DeleteFavorite(_id) {
  */
 
 function renderPagination() {
-  const options = ` <button style="border: none; background : none; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
+  const options = ` <button style="border: none; background : #64c8dc; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
     selectPage.innerHTML = options;
     selectPage.selectedIndex = 0;
 };
