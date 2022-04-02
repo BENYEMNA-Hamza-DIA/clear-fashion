@@ -12,25 +12,25 @@ h2 {
 }
 
 h1, h2, strong {
-    color: #AC459F;
+    color: #ac4545;
 }
 
 a {
-    color: #0BBDCA;
+    color: #25767c;
 }
 
 
 .button {
-    background-color: #FBD8FB;
+    background-color: #5e3d3d;
 }
 
 .choix show {
-    background-color: #FBD8FB;
+    background-color: #5e3d3d;
     min-width: 50px;
 }
 
 .choix option {
-    background-color: #FBD8FB;
+    background-color: #5e3d3d;
     color: black;
     padding: 20px;
     display: block;
@@ -45,7 +45,7 @@ a {
 .product {
     text-align: center;
     margin-bottom: 2em;
-    border: 2px solid rgb(77, 86, 128);
+    border: 2px solid rgb(57, 64, 97);
     padding-left: 10px;
 
     background-clip: content-box;
@@ -137,7 +137,7 @@ a {
 .new-price {
     font-size: 13px;
     color: white;
-    background-color: #AC459F;
+    background-color: #4533a8;
     padding: 5px;
     border-radius: 20%
 }
