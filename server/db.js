@@ -7,7 +7,7 @@ const MONGODB_DB_NAME = 'ClearFashion';
 let client;
 let db;
 
-const products = require('../total_products.json'); //products of the crapping to store in the mongodb database
+const products = require('./total_products.json'); //products of the crapping to store in the mongodb database
 
 const { ObjectId } = require('mongodb');
 
@@ -46,10 +46,6 @@ module.exports.connect = connect;
 
 module.exports.close = close;
 
-
-
-
-
 /**
  * Drop the database
  
@@ -71,7 +67,7 @@ async function drop_database(){
 
  module.exports.find_limit = async (query, limit) => {
  //find_limit = async (query, limit) => {
-  //await connect();
+  await connect();
   const result = await db.collection("products").aggregate(query).toArray();
   //console.log(result);
   return result;
@@ -258,4 +254,3 @@ async function main(){
 };
 
 //main();
-

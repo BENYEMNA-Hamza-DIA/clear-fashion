@@ -41,35 +41,36 @@ console.log(`📡 Running on port ${PORT}`);
 
 // client : https://v2-ochre.vercel.app
 
+
+
 /**
  * All products
  * URL : http://localhost:8092/products
  * URL app : https://server-seven-lemon.vercel.app/products
  */
 
-
+/** 
  app.get('/products', async(request, response) => {
   
-  let products = await db.products_search()
+  var products = await db.products_search({},offset,limit);
 
   response.send({"products by search method" : products});
 })
-
-
- /** 
- app.get('/products', async(request, response) => {
-  await connection();
-
-  const product = await db.all_products();
-  
-  response.send({"product": product});
-})
 */
+
+ 
+ app.get('/products', async(request, response) => {
+  
+  let products = await db.all_products();
+  
+  response.send({"all product": products});
+})
+
 
 /** 
  * By id
- * test_id : 62473543421ed444877b9909
- * URL test: http://localhost:8092/products/62473543421ed444877b9909
+ * test_id : 624770dc476e88ed75be01b1
+ * URL test: http://localhost:8092/products/624770dc476e88ed75be01b1
  * URL app : https://server-omega-rust.vercel.app/products/624770dc476e88ed75be01b1
 */
  app.get('/products/:_id', async (request, response) => {
@@ -83,7 +84,7 @@ console.log(`📡 Running on port ${PORT}`);
 /**
  * Search
  * 
- * URL app : https://server-seven-lemon.vercel.app/products/search?brand=montlimart
+ * URL app : https://server-omega-rust.vercel.app/products/search?brand=montlimart
  * 
  */
 
@@ -109,7 +110,7 @@ console.log(`📡 Running on port ${PORT}`);
 })
 */
 
-/** 
+
 app.get('/products/search', async (request, response) => {
   // set default values for query parameters
 
@@ -133,37 +134,15 @@ app.get('/products/search', async (request, response) => {
       response.send(products);
   }
 })
-*/
 
-app.get('/products/search', async(request, response) => {
-  const filters = request.query;
-  console.log('filters :>> ', filters);
-  
-  const brand = filters.brand !== undefined ? filters.brand : ''
-  const price = parseInt(filters.price,10) > 0 ? parseInt(filters.price,10) : ''
-  const limit = parseInt(filters.limit,10) > 0 ? parseInt(filters.limit,10) : 12
 
-  var match = {}
-  if( brand === '' &&  price !== '') match = {price: price} 
-  else if(brand !== '' && price === '') match = {brand: brand}
-  else if(brand !== '' && price !== '') match = {brand: brand, price: price}
 
-  query = [
-    {'$match' : match},
-    {'$sort' : {price:1}},
-    {'$limit' : limit}
-    ]
-  console.log('query :>> ', query);
-  
-  var filteredProducts = await db.find_limit(query)
-
-  console.log('filteredProducts.length :>> ', filteredProducts.length);
-  response.send(filteredProducts);
-})
 
 /***************************************************
  * Listen PORT
  */
-
+connection();
 app.listen(PORT);
+
+
 
