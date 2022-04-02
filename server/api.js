@@ -15,6 +15,9 @@ app.options('*', cors());
 
 console.log(`📡 Running on port ${PORT}`);
 
+// server : https://hamza-server-seven.vercel.app
+
+
 /**
  * Connection
  */
@@ -37,7 +40,7 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-// server : https://hamza-server-seven.vercel.app
+
 
 
 
@@ -113,7 +116,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 app.get('/products/search', async (request, response) => {
   // set default values for query parameters
-  //await connection();
+  await connection();
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   
   if (brand === 'all' && price === 'all') {
@@ -141,8 +144,11 @@ app.get('/products/search', async (request, response) => {
 /***************************************************
  * Listen PORT
  */
-connection();
-app.listen(PORT);
+ async function main(){
+  await connection();
+  app.listen(PORT);
+}
+main();
 
 
 
