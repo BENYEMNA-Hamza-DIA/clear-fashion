@@ -70,7 +70,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
     console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
     try {
         let response = await fetch(
-            `https://hamza-server-seven.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+            `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
         );
         let body = await response.json();
         if (body.length == 0) {
