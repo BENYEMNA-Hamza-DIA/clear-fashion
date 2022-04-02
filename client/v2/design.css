@@ -1,9 +1,15 @@
+h3{
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 3rem;
+
+}
+
 body {
     margin: 0 auto;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.5;
-    color: #555;
-    
+    color: rgb(255, 255, 255);
     padding: 2em 1em;
     background-color: #64c8dc;
 }
@@ -16,25 +22,25 @@ h2 {
 }
 
 h1, h2, strong {
-    color: #223c6b;
+    color: #3b70d1;
 }
 
 a {
-    color: #25767c;
+    color: #adcdcf;
 }
 
 
 .button {
-    background-color: #5e3d3d;
+    background-color: #adcdcf;
 }
 
 .choix show {
-    background-color: #5e3d3d;
+    background-color: #adcdcf;
     min-width: 50px;
 }
 
 .choix option {
-    background-color: #5e3d3d;
+    background-color: #adcdcf;
     color: black;
     padding: 20px;
     display: block;
@@ -49,7 +55,7 @@ a {
 .product {
     text-align: center;
     margin-bottom: 2em;
-    border: 2px solid rgb(57, 64, 97);
+    border: 2px solid rgb(0, 0, 0);
     padding-left: 10px;
 
     background-clip: content-box;
@@ -91,12 +97,12 @@ a {
 }
 
 .card {
-    background-color: rgb(108, 185, 226);
+    background-color: rgb(201, 235, 253);
     border: none;
     border-radius: 10px;
     width: 250px;
     height: 500px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgba(58, 57, 57, 0.2), 0 6px 20px 0 rgba(58, 57, 57, 0.2);
     margin-top: 20px;
     margin-right: 20px;
     padding: 10px;
@@ -116,12 +122,12 @@ a {
 .wishlist {
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color: rgb(201, 227, 236);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgba(58, 57, 57, 0.2), 0 6px 20px 0 rgba(58, 57, 57, 0.2);
     cursor: pointer
 }
 
@@ -141,7 +147,7 @@ a {
 .new-price {
     font-size: 13px;
     color: white;
-    background-color: #4533a8;
+    background-color: #adcce2;
     padding: 5px;
     border-radius: 20%
 }
