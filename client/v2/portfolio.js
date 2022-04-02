@@ -1,6 +1,9 @@
 // Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
+// client : https://hamza-client.vercel.app
+
+
 // current products on the page
 let currentProducts = [];
 let favorite_list = [];
@@ -11,6 +14,7 @@ currentPagination['paginationChoice'] = "actual"
 let currentBrand = 'all';
 let currentMaxPrice = 1000;
 let currentSort = 1;
+
 
 // instantiate the selectors
 const selectShow = document.querySelector('#show-select');
@@ -30,6 +34,7 @@ const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
 const spanLastReleased = document.querySelector('#lastReleased');
 
+
 /**
  * Set global value
  * @param {Array} result - products to display
@@ -42,12 +47,14 @@ const setCurrentProducts = ({ result, meta }) => {
 };
 
 
+
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
+
 const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
     if (isNaN(price)) {
         currentMaxPrice = 1000;
@@ -63,7 +70,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
     console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
     try {
         let response = await fetch(
-            `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+            `https://hamza-server-seven.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
         );
         let body = await response.json();
         if (body.length == 0) {
@@ -77,9 +84,10 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
             );
             body = await response.json()
         }
+
         console.log(body)
         currentProducts = body;
-        //currentPagination['currentPage'] = 1;
+
         currentPagination['currentSize'] = size;
         currentBrand = brand
         currentMaxPrice = price
@@ -88,7 +96,6 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
             console.error(body);
             return { currentProducts, currentPagination };
         }
-        //return body.data
 
         return body;
 
@@ -103,6 +110,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
  * Render list of products
  * @param  {Array} products
  */
+
 const renderProducts = products => {
     const fragment = document.createDocumentFragment();
     const div = document.createElement('div');
@@ -156,26 +164,21 @@ const renderProducts = products => {
     div.innerHTML = template;
     fragment.appendChild(div);
     sectionProducts.innerHTML = '<h2></br><i class="fa-solid fa-shirt"></i> Products:</h2>';
-    //sectionProducts.appendChild(`<div class="cards">`);
+
     sectionProducts.appendChild(fragment);
-    //sectionProducts.appendChild(`</div>`)
 
 };
 
 
 function AddFavorite(_id) {
-    //console.log(uuid)
     favorite_list.push(_id);
-    //console.log(favorite_list)
     render(currentProducts, currentPagination)
 }
 
 function DeleteFavorite(_id) {
-    //console.log(uuid)
-    //favorite_list.push(_id);
-    //console.log(favorite_list)
     render(currentProducts, currentPagination)
 }
+
 
 /**
  * Render page selector
@@ -189,7 +192,10 @@ function renderPagination() {
 };
 
 
-// Show the list of brand names to filter
+/**
+ * List of brands name filter
+ * @param {*} products 
+ */
 const renderBrands = products => {
 
     const options = `<option value="all">all brands</option>
@@ -205,6 +211,7 @@ const renderBrands = products => {
     selectBrand.selectedIndex = i;
 };
 
+
 /**
  * Render page selector
  * @param  {Object} pagination
@@ -219,10 +226,12 @@ function renderIndicators() {
     //spanLastReleased.innerHTML = LastReleased();
 };
 
+
 function LastReleased() {
     var sortedProducts = SortProducts(currentProducts, "date-asc")
     return sortedProducts[0].released
 }
+
 
 function CountNewProducts() {
     var count = 0
@@ -236,6 +245,7 @@ function CountNewProducts() {
     return count
 }
 
+
 function Percentile(p) {
     let clone = [...currentProducts]
     var sortedProducts = clone.sort((x, y) => x.price - y.price)
@@ -245,6 +255,7 @@ function Percentile(p) {
     return percentile.toString() + "&euro;"
 }
 
+
 const render = (products) => {
     renderBrands(products);
     renderProducts(products);
@@ -253,14 +264,16 @@ const render = (products) => {
 
 };
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Features
+ */
 
 // Select the number of products to display
 
 
 selectShow.addEventListener('change', event => {
     fetchProducts(parseInt(event.target.value))
-        .then(() => render(currentProducts)); //, pagination
+        .then(() => render(currentProducts));
 });
 
 //Feature 1 - Browse pages
