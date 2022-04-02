@@ -8,38 +8,37 @@
  * Current page
  */
 
-let currentProducts = [];
-let favorite_list = [];
-let currentPagination = {};
-currentPagination['currentSize'] = 12;
-currentPagination['currentPage'] = 1;
-currentPagination['paginationChoice'] = "actual"
-let currentBrand = 'all';
-let currentMaxPrice=600;
-let currentSort = 1;
+ let currentProducts = [];
+ let favorite_list = [];
+ let currentPagination = {};
+ currentPagination['currentSize'] = 12;
+ currentPagination['currentPage'] = 1;
+ currentPagination['paginationChoice'] = "actual"
+ let currentBrand = 'all';
+ let currentMaxPrice = 1000;
+ let currentSort = 1;
 
 
 /**
  * Query selector
  */
 
-const selectShow = document.querySelector('#show-select');
-const selectPagePrevious = document.querySelector('#previous-page');
-const selectPageNext = document.querySelector('#next-page');
-
-const sectionProducts = document.querySelector('#products');
-const selectBrand = document.querySelector('#brand-select');
-const selectFilterPrice = document.querySelector('#filter-price-select')
-
-const selectFilterFavorite = document.querySelector('#filter-favorite-select')
-const selectSort = document.querySelector('#sort-select');
-
-const spanNbProducts = document.querySelector('#nbProducts');
-const spanNbNewProducts = document.querySelector('#nbNewProducts');
-const spanp50 = document.querySelector('#p50');
-const spanp90 = document.querySelector('#p90');
-const spanp95 = document.querySelector('#p95');
-const spanLastReleased = document.querySelector('#lastReleased');
+ const selectShow = document.querySelector('#show-select');
+ const selectPagePrevious = document.querySelector('#previous-page');
+ const selectPageNext = document.querySelector('#next-page');
+ const selectBrand = document.querySelector('#brand-select');
+ const sectionProducts = document.querySelector('#products');
+ const selectFilterPrice = document.querySelector('#filter-price-select')
+ const selectFilterDate = document.querySelector('#filter-date-select')
+ const selectFilterFavorite = document.querySelector('#filter-favorite-select')
+ const selectSort = document.querySelector('#sort-select');
+ 
+ const spanNbProducts = document.querySelector('#nbProducts');
+ const spanNbNewProducts = document.querySelector('#nbNewProducts');
+ const spanp50 = document.querySelector('#p50');
+ const spanp90 = document.querySelector('#p90');
+ const spanp95 = document.querySelector('#p95');
+ const spanLastReleased = document.querySelector('#lastReleased');
 
 
 /**
@@ -63,53 +62,53 @@ const setCurrentProducts = ({ result, meta }) => {
  * @return {Object}
  */
 
+ const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
+  if (isNaN(price)) {
+      currentMaxPrice = 1000;
+      price = currentMaxPrice
+  }
+  if (page == "actual") { currentPagination.currentPage = 1 }
+  if (page == "next") { currentPagination.currentPage = currentPagination.currentPage + 1 }
+  if (page == "previous") { currentPagination.currentPage = currentPagination.currentPage - 1 }
+  if (currentPagination.currentPage < 1) { currentPagination.currentPage = 1 }
+  let pageNumber = currentPagination.currentPage
+  let skip = (pageNumber - 1) * size;
+  let limit = size * pageNumber;
+  console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
+  try {
+      let response = await fetch(
+          `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+      );
+      let body = await response.json();
+      if (body.length == 0) {
+          currentPagination.currentPage = currentPagination.currentPage - 1
+          let pageNumber = currentPagination.currentPage
+          let skip = (pageNumber - 1) * size;
+          let limit = size * pageNumber;
+          console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
+          response = await fetch(
+              `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+          );
+          body = await response.json()
+      }
+      console.log(body)
+      currentProducts = body;
 
-const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
-    if (isNaN(price)) {
-        currentMaxPrice = 600;
-        price = currentMaxPrice
-    }
-    if (page == "actual") { currentPagination.currentPage = 1 }
-    if (page == "next") { currentPagination.currentPage = currentPagination.currentPage + 1 }
-    if (page == "previous") { currentPagination.currentPage = currentPagination.currentPage - 1 }
-    if (currentPagination.currentPage < 1) { currentPagination.currentPage = 1 }
-    let pageNumber = currentPagination.currentPage
-    let skip = (pageNumber - 1) * size;
-    let limit = size * pageNumber;
-    console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
-    try {
-        let response = await fetch(
-            `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
-        );
-        let body = await response.json();
-        if (body.length == 0) {
-            currentPagination.currentPage = currentPagination.currentPage - 1
-            let pageNumber = currentPagination.currentPage
-            let skip = (pageNumber - 1) * size;
-            let limit = size * pageNumber;
-            console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
-            response = await fetch(
-                `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
-            );
-            body = await response.json()
-        }
+      currentPagination['currentSize'] = size;
+      currentBrand = brand
+      currentMaxPrice = price
+      currentSort = sort;
+      if (body.success !== true) {
+          console.error(body);
+          return { currentProducts, currentPagination };
+      }
 
-        console.log(body)
-        currentProducts = body;
+      return body;
 
-        currentPagination['currentSize'] = size;
-        currentBrand = brand
-        currentMaxPrice = price
-        currentSort = sort;
-        if (body.success !== true) {
-            console.error(body);
-            return { currentProducts, currentPagination };
-        }
-        return body;
-    } catch (error) {
-        console.error(error);
-        return { currentProducts, currentPagination };
-    }
+  } catch (error) {
+      console.error(error);
+      return { currentProducts, currentPagination };
+  }
 };
 
 
@@ -118,69 +117,71 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
  * @param  {Array} products
  */
 
-const renderProducts = products => {
-    const fragment = document.createDocumentFragment();
-    const div = document.createElement('div');
-    let template = `<div class="cards">`
-    template += products
-        .map(product => {
-            if (favorite_list.includes(product._id)) {
-                return `
-                <div class="card" id=${product._id}>
-                
-                 <h5 class="brand-name">${product.brand}</h5>
-                <div class="image-container">
-                    <div class="first">
-                        <div class="d-flex justify-content-between align-items-center">
-                    </div>
-                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
-                </div>
-                <div class="product-detail-container p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="${product.link}">${product.name}</br></a>
-                            <a class="new-price">${product.price}€</a>
-                        </div>
-    <button class="wishlist" style="border: none;color:#FF8773" onclick= DeleteFavorite('${product._id}')>${"&#10084;"}</button> 
-                    </div>
-         
-      </div>`;
-            }
-            else {
-                return `
-      <div class="card"   id=${product._id}>
-                        <h5 class="brand-name">${product.brand}</h5>
+ const renderProducts = products => {
+  const fragment = document.createDocumentFragment();
+  const div = document.createElement('div');
+  let template = `<div class="cards">`
+  template += products
+      .map(product => {
+          if (favorite_list.includes(product._id)) {
+              return `
+              <div class="card" id=${product._id}>
+              
+               <h5 class="brand-name">${product.brand}</h5>
+              <div class="image-container">
+                  <div class="first">
+                      <div class="d-flex justify-content-between align-items-center">
+                  </div>
+                  </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+              </div>
+              <div class="product-detail-container p-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <a href="${product.link}">${product.name}</br></a>
+                          <a class="new-price">${product.price}€</a>
+                      </div>
+  <button class="wishlist" style="border: none;color:#FF8773" onclick= DeleteFavorite('${product._id}')>${"&#10084;"}</button> 
+                  </div>
+       
+    </div>`;
+          }
+          else {
+              return `
+    <div class="card"   id=${product._id}>
+                      <h5 class="brand-name">${product.brand}</h5>
 <div class="image-container" >
-                    <div class="first">
-                        <div class="d-flex justify-content-between align-items-center"> 
-                                </div>
-                            
-                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
-                </div><div class="product-detail-container p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="${product.link}">${product.name}</br></a>
-                            <a class="new-price">${product.price}€</a>
-                        </div>
+                  <div class="first">
+                      <div class="d-flex justify-content-between align-items-center"> 
+                              </div>
+                          
+                  </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+              </div><div class="product-detail-container p-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <a href="${product.link}">${product.name}</br></a>
+                          <a class="new-price">${product.price}€</a>
+                      </div>
 <button class="wishlist" style="border: none; color:#8FB8C1" onclick= AddFavorite('${product._id}')>${"&#10084;"}</button>
-                    </div>
-         
-      </div>`;
-            }
-        }).join('');
-    template += `</div>`
+                  </div>
+       
+    </div>`;
+          }
+      }).join('');
+  template += `</div>`
 
-    div.innerHTML = template;
-    fragment.appendChild(div);
-    sectionProducts.innerHTML = '<h2></br><i class="fa-solid fa-shirt"></i> Products:</h2>';
+  div.innerHTML = template;
+  fragment.appendChild(div);
+  sectionProducts.innerHTML = '<h2></br><i class="fa-solid fa-shirt"></i> Products:</h2>';
 
-    sectionProducts.appendChild(fragment);
+  sectionProducts.appendChild(fragment);
 
 };
+
 
 /**
  * Favorite list
  * 
  * @param {*} _id 
  */
+
 function AddFavorite(_id) {
     favorite_list.push(_id);
     render(currentProducts, currentPagination)
@@ -195,9 +196,9 @@ function DeleteFavorite(_id) {
  * Render page selector
  * @param  {Object} pagination
  */
-function renderPagination() {
-    const options = ` <button style="border: none; background : none; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
 
+function renderPagination() {
+  const options = ` <button style="border: none; background : none; color:#8FB8C1; font-size : 20px;" onclick= AddFavorite('${product.uuid}')>${"&#10084;"}</button>`
     selectPage.innerHTML = options;
     selectPage.selectedIndex = 0;
 };
@@ -207,6 +208,7 @@ function renderPagination() {
  * List of brands name filter
  * @param {*} products 
  */
+
 const renderBrands = products => {
 
     const options = `<option value="all">all brands</option>
@@ -237,7 +239,6 @@ function renderIndicators() {
 
 };
 
-
 function Percentile(p) {
     let clone = [...currentProducts]
     var sortedProducts = clone.sort((x, y) => x.price - y.price)
@@ -247,6 +248,22 @@ function Percentile(p) {
     return percentile.toString() + "&euro;"
 }
 
+function LastReleased() {
+  var sortedProducts = SortProducts(currentProducts, "date-asc")
+  return sortedProducts[0].released
+}
+
+function CountNewProducts() {
+  var count = 0
+  for (var product of currentProducts) {
+      let today = new Date('2022-01-30')
+      let released = new Date(product.released);
+      if (today - released < 14 * 1000 * 60 * 60 * 24) {
+          count += 1
+      }
+  }
+  return count
+}
 
 const render = (products) => {
     renderBrands(products);
@@ -259,7 +276,6 @@ const render = (products) => {
 /******************************************************************************
  * Features
  */
-
 
 selectShow.addEventListener('change', event => {
     fetchProducts(parseInt(event.target.value))
@@ -311,16 +327,17 @@ selectBrand.addEventListener('change', event => {
 
 /**
  * Feature 4 : Filter by reasonable price
- */
+ 
 
 selectFilterPrice.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, parseInt(event.target.value))
         .then(() => render(currentProducts));
 })
 
+
 /**
  * Feature 5 : Sort by price
- */
+ 
 
 selectSort.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, currentMaxPrice, parseInt(event.target.value))
@@ -329,7 +346,7 @@ selectSort.addEventListener('change', event => {
 
 /** Feature 5 & 6 : Sort by date and price (asc and desc)
  * 
- */
+ 
 
  selectSort.addEventListener('change', async (event) => {
   switch (event.target.value) {
@@ -350,6 +367,8 @@ selectSort.addEventListener('change', event => {
   }
   render(currentProducts, currentPagination);
 });
+
+
 
 /**
  * Feature 14 - Filter by favorite
