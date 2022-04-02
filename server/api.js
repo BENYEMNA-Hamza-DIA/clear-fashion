@@ -37,9 +37,9 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-// server : https://server-six-xi.vercel.app
+// server : https://hamza-server-seven.vercel.app
 
-// client : https://v2-nine-drab.vercel.app
+// client : https://hamza-client.vercel.app
 
 
 

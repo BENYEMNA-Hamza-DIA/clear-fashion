@@ -1,0 +1,143 @@
+body {
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    padding: 2em 1em;
+    color: #555;
+}
+
+h2 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+h1, h2, strong {
+    color: #AC459F;
+}
+
+a {
+    color: #0BBDCA;
+}
+
+
+.button {
+    background-color: #FBD8FB;
+}
+
+.choix show {
+    background-color: #FBD8FB;
+    min-width: 50px;
+}
+
+.choix option {
+    background-color: #FBD8FB;
+    color: black;
+    padding: 20px;
+    display: block;
+}
+
+.photo img {
+    height: 200px;
+    width: auto;
+    border-radius: 8px;
+}
+
+.product {
+    text-align: center;
+    margin-bottom: 2em;
+    border: 2px solid rgb(77, 86, 128);
+    padding-left: 10px;
+
+    background-clip: content-box;
+}
+
+.product-im {
+    text-align: right;
+}
+
+
+.left {
+    width: 44%;
+    height: 200px;
+    margin-right: 20px;
+}
+
+.right {
+    width: 43%;
+    height: 200px;
+    column-width: 60px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+.container {
+    width: 900px;
+    margin-top: 20px
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center
+}
+
+.card {
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    width: 250px;
+    height: 500px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 20px;
+    margin-right: 20px;
+    padding: 10px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.thumbnail-image {
+    border-radius: 10px !important;
+    height: 230px;
+    width: 226px;
+}
+
+
+.wishlist {
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer
+}
+
+.first {
+    position: absolute;
+    width: 100%;
+    padding: 9px
+}
+
+.dress-name {
+    font-size: 13px;
+    font-weight: bold;
+    width: 75%
+}
+
+
+.new-price {
+    font-size: 13px;
+    color: white;
+    background-color: #AC459F;
+    padding: 5px;
+    border-radius: 20%
+}
