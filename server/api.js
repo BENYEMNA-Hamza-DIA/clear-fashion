@@ -15,7 +15,7 @@ app.options('*', cors());
 
 console.log(`📡 Running on port ${PORT}`);
 
-// server : https://hamza-server-seven.vercel.app
+// server :  https://server-seven-chi.vercel.app
 
 
 /**
