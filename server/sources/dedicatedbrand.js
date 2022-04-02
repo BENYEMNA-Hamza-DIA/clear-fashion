@@ -3,10 +3,13 @@ const cheerio = require('cheerio');
 const {'v5': uuidv5} = require('uuid');
 
 /**
- * Parse webpage restaurant
+ * Parse webpage eshop for dedicated
  * @param  {String} data - html response
- * @return {Object} restaurant
+ * @return {Object} eshop
  */
+
+// I finally managed to scrap correctly the picture
+
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -33,11 +36,12 @@ const parse = data => {
       .find('img')
       .attr('data-src');
         
-      const id = uuidv5(link, uuidv5.URL);
+      const uuid = uuidv5(link, uuidv5.URL);
 
-      return {brand, link, name, price, photo, id};
+      return {brand, link, name, price, photo, uuid};
       
-    }).get();
+    })
+    .get();
 };
 
 /**

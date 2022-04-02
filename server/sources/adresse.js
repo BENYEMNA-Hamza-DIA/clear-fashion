@@ -2,11 +2,14 @@ const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 const {'v5': uuidv5} = require('uuid');
 
+
 /**
- * Parse webpage e-shop
+ * Parse webpage e-shop for adresse
  * @param  {String} data - html response
  * @return {Array} products
  */
+
+// I finally managed to scrap correctly the picture
 
  const parse = (data) => {
     const $ = cheerio.load(data);
@@ -31,10 +34,11 @@ const {'v5': uuidv5} = require('uuid');
         .find('a img.replace-2x.lazy.img_0')
         .attr('data-original');
 
-        const id = uuidv5(link, uuidv5.URL);
+        const uuid = uuidv5(link, uuidv5.URL);
 
-        return {brand, link, name, price, photo, id};
-    }).get();
+        return {brand, link, name, price, photo, uuid};
+    })
+    .get();
 };
 
 
