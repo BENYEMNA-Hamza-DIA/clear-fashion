@@ -15,7 +15,7 @@
  currentPagination['currentPage'] = 1;
  currentPagination['paginationChoice'] = "actual"
  let currentBrand = 'all';
- let currentMaxPrice = 1000;
+ let currentMaxPrice = 600;
  let currentSort = 1;
 
 
@@ -64,7 +64,7 @@ const setCurrentProducts = ({ result, meta }) => {
 
  const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
   if (isNaN(price)) {
-      currentMaxPrice = 1000;
+      currentMaxPrice = 600;
       price = currentMaxPrice
   }
   if (page == "actual") { currentPagination.currentPage = 1 }
@@ -248,22 +248,6 @@ function Percentile(p) {
     return percentile.toString() + "&euro;"
 }
 
-function LastReleased() {
-  var sortedProducts = SortProducts(currentProducts, "date-asc")
-  return sortedProducts[0].released
-}
-
-function CountNewProducts() {
-  var count = 0
-  for (var product of currentProducts) {
-      let today = new Date('2022-01-30')
-      let released = new Date(product.released);
-      if (today - released < 14 * 1000 * 60 * 60 * 24) {
-          count += 1
-      }
-  }
-  return count
-}
 
 const render = (products) => {
     renderBrands(products);
