@@ -39,7 +39,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 // server : https://hamza-server-seven.vercel.app
 
-// client : https://hamza-client.vercel.app
+
 
 
 
@@ -141,7 +141,7 @@ app.get('/products/search', async (request, response) => {
 /***************************************************
  * Listen PORT
  */
-//connection();
+connection();
 app.listen(PORT);
 
 
