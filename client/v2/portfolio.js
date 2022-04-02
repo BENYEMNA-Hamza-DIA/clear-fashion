@@ -206,7 +206,7 @@ function renderPagination() {
 
 
 /**
- * Filer by brand
+ * Filter by brand
  * @param {*} products 
  */
 const renderBrands = products => {
