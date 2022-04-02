@@ -4,7 +4,10 @@
 // client : https://hamza-client.vercel.app
 
 
-// current products on the page
+/**
+ * Current page
+ */
+
 let currentProducts = [];
 let favorite_list = [];
 let currentPagination = {};
@@ -16,14 +19,18 @@ let currentMaxPrice = 1000;
 let currentSort = 1;
 
 
-// instantiate the selectors
+/**
+ * Query selector
+ */
+
 const selectShow = document.querySelector('#show-select');
 const selectPagePrevious = document.querySelector('#previous-page');
 const selectPageNext = document.querySelector('#next-page');
-const selectBrand = document.querySelector('#brand-select');
+
 const sectionProducts = document.querySelector('#products');
+const selectBrand = document.querySelector('#brand-select');
 const selectFilterPrice = document.querySelector('#filter-price-select')
-const selectFilterDate = document.querySelector('#filter-date-select')
+
 const selectFilterFavorite = document.querySelector('#filter-favorite-select')
 const selectSort = document.querySelector('#sort-select');
 
@@ -36,16 +43,17 @@ const spanLastReleased = document.querySelector('#lastReleased');
 
 
 /**
- * Set global value
+ * Set products and meta for the products of the current page
+ * 
  * @param {Array} result - products to display
  * @param {Object} meta - pagination meta info
  */
+
 const setCurrentProducts = ({ result, meta }) => {
     currentProducts = result;
     currentPagination = meta;
 
 };
-
 
 
 /**
@@ -54,6 +62,7 @@ const setCurrentProducts = ({ result, meta }) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
+
 
 const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
     if (isNaN(price)) {
@@ -96,9 +105,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
             console.error(body);
             return { currentProducts, currentPagination };
         }
-
         return body;
-
     } catch (error) {
         console.error(error);
         return { currentProducts, currentPagination };
@@ -169,7 +176,11 @@ const renderProducts = products => {
 
 };
 
-
+/**
+ * Favorite list
+ * 
+ * @param {*} _id 
+ */
 function AddFavorite(_id) {
     favorite_list.push(_id);
     render(currentProducts, currentPagination)
@@ -219,31 +230,12 @@ const renderBrands = products => {
 function renderIndicators() {
 
     spanNbProducts.innerHTML = currentProducts.length;
-    //spanNbNewProducts.innerHTML = CountNewProducts();
+
     spanp50.innerHTML = Percentile(0.50);
     spanp90.innerHTML = Percentile(0.90);
     spanp95.innerHTML = Percentile(0.95);
-    //spanLastReleased.innerHTML = LastReleased();
+
 };
-
-
-function LastReleased() {
-    var sortedProducts = SortProducts(currentProducts, "date-asc")
-    return sortedProducts[0].released
-}
-
-
-function CountNewProducts() {
-    var count = 0
-    for (var product of currentProducts) {
-        let today = new Date('2022-01-30')
-        let released = new Date(product.released);
-        if (today - released < 14 * 1000 * 60 * 60 * 24) {
-            count += 1
-        }
-    }
-    return count
-}
 
 
 function Percentile(p) {
@@ -259,16 +251,14 @@ function Percentile(p) {
 const render = (products) => {
     renderBrands(products);
     renderProducts(products);
-    //renderPagination();
     renderIndicators();
 
 };
 
+
 /******************************************************************************
  * Features
  */
-
-// Select the number of products to display
 
 
 selectShow.addEventListener('change', event => {
@@ -276,18 +266,24 @@ selectShow.addEventListener('change', event => {
         .then(() => render(currentProducts));
 });
 
-//Feature 1 - Browse pages
+
+/**
+ * Feature 1 : Browse pages
+ */
 
 selectPagePrevious.addEventListener('click', event => {
     fetchProducts(currentPagination.currentSize, "previous")
-        .then(() => render(currentProducts)); //, pagination
+        .then(() => render(currentProducts)); 
 });
 selectPageNext.addEventListener('click', event => {
     fetchProducts(currentPagination.currentSize, "next")
-        .then(() => render(currentProducts)); //, pagination
+        .then(() => render(currentProducts)); 
 });
 
-//Feature 2 - Filter by brands
+
+/**
+ * Feature 2 : Filter by brands
+ */
 
 
 selectBrand.addEventListener('change', event => {
@@ -296,21 +292,68 @@ selectBrand.addEventListener('change', event => {
 })
 
 
-//Feature 4 - Filter by reasonable price
+/** 
+ * Feature 3 : Filter by reasonnable price 
+ */
+
+ selectByReasonnablePrice.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "By reasonable price"){
+    products.result = products.result.filter(product => product.price <= 50);
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+
+});
+
+
+/**
+ * Feature 4 : Filter by reasonable price
+ */
 
 selectFilterPrice.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, parseInt(event.target.value))
         .then(() => render(currentProducts));
 })
 
-//Feature 5 - Sort by price
+/**
+ * Feature 5 : Sort by price
+ */
 
 selectSort.addEventListener('change', event => {
     fetchProducts(currentPagination.currentSize, currentPagination.currentPage, currentBrand, currentMaxPrice, parseInt(event.target.value))
         .then(() => render(currentProducts));
 })
 
-//Feature 14 - Filter by favorite
+/** Feature 5 & 6 : Sort by date and price (asc and desc)
+ * 
+ */
+
+ selectSort.addEventListener('change', async (event) => {
+  switch (event.target.value) {
+    case 'price-asc':
+      currentProducts = currentProducts.sort((p1, p2) => { return p1.price - p2.price; });
+      break;
+    case 'price-desc':
+      currentProducts = currentProducts.sort((p1, p2) => { return p2.price - p1.price; });
+      break;
+    case 'date-asc':
+      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p2.released) - new Date(p1.released); });
+      break;
+    case 'date-desc':
+      currentProducts = currentProducts.sort((p1, p2) => { return new Date(p1.released) - new Date(p2.released); });
+      break;
+    default:
+      break;
+  }
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Feature 14 - Filter by favorite
+ */
 
 selectFilterFavorite.addEventListener('change', event => {
     fetchProducts()
@@ -331,10 +374,8 @@ function filterFavorite(currentProducts, selector) {
                 filteredProducts.push(product)
             }
         }
-
         return filteredProducts
     }
-
 }
 
 document.addEventListener('DOMContentLoaded', () =>
