@@ -22,7 +22,6 @@
 /**
  * Query selector
  */
-
  const selectShow = document.querySelector('#show-select');
  const selectPagePrevious = document.querySelector('#previous-page');
  const selectPageNext = document.querySelector('#next-page');
@@ -34,10 +33,11 @@
  const selectSort = document.querySelector('#sort-select');
  
  const spanNbProducts = document.querySelector('#nbProducts');
+ const spanNbNewProducts = document.querySelector('#nbNewProducts');
  const spanp50 = document.querySelector('#p50');
  const spanp90 = document.querySelector('#p90');
  const spanp95 = document.querySelector('#p95');
-
+ const spanLastReleased = document.querySelector('#lastReleased');
 
 
 /**
@@ -245,6 +245,23 @@ function Percentile(p) {
     index = Math.round(index)
     var percentile = sortedProducts[index].price
     return percentile.toString() + "&euro;"
+}
+
+function LastReleased() {
+  var sortedProducts = SortProducts(currentProducts, "date-asc")
+  return sortedProducts[0].released
+}
+
+function CountNewProducts() {
+  var count = 0
+  for (var product of currentProducts) {
+      let today = new Date('2022-01-30')
+      let released = new Date(product.released);
+      if (today - released < 14 * 1000 * 60 * 60 * 24) {
+          count += 1
+      }
+  }
+  return count
 }
 
 
