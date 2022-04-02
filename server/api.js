@@ -19,7 +19,8 @@ console.log(`📡 Running on port ${PORT}`);
 
 
 /**
- * Connection
+ * Connection : use this function to be sure that the database is connected 
+ * because I did'nt implement the connections in the methods
  */
 
  async function connection(){
@@ -33,24 +34,27 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * Test
- * URL : http://localhost:8092/
+ * 
+ * URL test: http://localhost:8092/
+ * 
+ * API URL : https://server-seven-chi.vercel.app
  */
 
  app.get('/', (request, response) => {
   response.send({ 'ack': true });
 });
 
-
-
-
-
-
+/**************************************************************************************************
+ * Endpoints
+ */
 
 /**
  * All products
  * URL : http://localhost:8092/products
- * URL app : https://server-seven-lemon.vercel.app/products
+ * API URL : https://server-seven-lemon.vercel.app/products
  */
+
+//Unused but works
 
 /** 
  app.get('/products', async(request, response) => {
@@ -73,9 +77,10 @@ console.log(`📡 Running on port ${PORT}`);
 /** 
  * By id
  * test_id : 624770dc476e88ed75be01b1
- * URL test: http://localhost:8092/products/624770dc476e88ed75be01b1
- * URL app : https://server-omega-rust.vercel.app/products/624770dc476e88ed75be01b1
+ * URL : http://localhost:8092/products/624770dc476e88ed75be01b1
+ * API URL : https://server-seven-lemon.vercel.app/products/624770dc476e88ed75be01b1
 */
+
  app.get('/products/:_id', async (request, response) => {
   await connection();
   let product = await db.by_id(request.params._id);
@@ -86,37 +91,13 @@ console.log(`📡 Running on port ${PORT}`);
 
 /**
  * Search
- * 
- * URL app : https://server-omega-rust.vercel.app/products/search?brand=montlimart
- * 
+ * API URL : https://server-seven-lemon.vercel.app/products/search?brand=montlimart
  */
 
-/**
- app.get('/products/search', async(request, response) => {
-
-  const filters = request.query;
-  
-  const brand = filters.brand !== undefined ? filters.brand : ''
-  const price = parseInt(filters.price,10) > 0 ? parseInt(filters.price,10) : ''
-  const limit = parseInt(filters.limit,10) > 0 ? parseInt(filters.limit,10) : 12
-
-  var match = {}
-  if( brand === '' &&  price !== '') match = {price: price} 
-  else if(brand !== '' && price === '') match = {brand: brand}
-  else if(brand !== '' && price !== '') match = {brand: brand, price: price}
-
-  query = [{'$match' : match},{'$sort' : {price:1}},{'$limit' : limit}]
-  
-  var products = await db.find_limit(query)
-
-  response.send(products);
-})
-*/
-
-
 app.get('/products/search', async (request, response) => {
-  // set default values for query parameters
+
   await connection();
+
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   
   if (brand === 'all' && price === 'all') {
@@ -137,7 +118,6 @@ app.get('/products/search', async (request, response) => {
       response.send(products);
   }
 })
-
 
 
 
