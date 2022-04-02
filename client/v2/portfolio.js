@@ -15,7 +15,7 @@ currentPagination['currentSize'] = 12;
 currentPagination['currentPage'] = 1;
 currentPagination['paginationChoice'] = "actual"
 let currentBrand = 'all';
-let currentMaxPrice = 1000;
+let currentMaxPrice=600;
 let currentSort = 1;
 
 
@@ -66,7 +66,7 @@ const setCurrentProducts = ({ result, meta }) => {
 
 const fetchProducts = async (size = currentPagination.currentSize, page = "actual", brand = currentBrand, price = currentMaxPrice, sort = currentSort) => {
     if (isNaN(price)) {
-        currentMaxPrice = 1000;
+        currentMaxPrice = 600;
         price = currentMaxPrice
     }
     if (page == "actual") { currentPagination.currentPage = 1 }
