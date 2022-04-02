@@ -47,16 +47,16 @@ console.log(`📡 Running on port ${PORT}`);
  * URL app : https://server-seven-lemon.vercel.app/products
  */
 
-/** 
+
  app.get('/products', async(request, response) => {
+  
+  let products = await db.products_search()
 
-  const products = await db.products_search()
-
-  response.send({"products" : products});
+  response.send({"products by search method" : products});
 })
-*/
 
- 
+
+ /** 
  app.get('/products', async(request, response) => {
   await connection();
 
@@ -64,17 +64,15 @@ console.log(`📡 Running on port ${PORT}`);
   
   response.send({"product": product});
 })
+*/
 
-
-/**
+/** 
  * By id
  * test_id : 62473543421ed444877b9909
  * URL test: http://localhost:8092/products/62473543421ed444877b9909
- * URL app : https://server-seven-lemon.vercel.app/products/62473543421ed444877b9909
- */
-
+ * URL app : https://server-omega-rust.vercel.app/products/624770dc476e88ed75be01b1
+*/
  app.get('/products/:_id', async (request, response) => {
-  await connection();
 
   let product = await db.by_id(request.params._id);
   
@@ -140,8 +138,5 @@ app.get('/products/search', async (request, response) => {
  * Listen PORT
  */
 
-async function main(){
-  await connection();
-  app.listen(PORT);
-}
-main();
+app.listen(PORT);
+
