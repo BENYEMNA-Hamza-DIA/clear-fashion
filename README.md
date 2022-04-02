@@ -1,8 +1,3 @@
-Thanks to YONES Maélis that helped me a lot for this project ! 🙏🏼
-
-Her github link : https://github.com/MaelisYONES
-
-
 # 👕 Clear Fashion
 
 > What's the story behind each item of clothing you buy?
