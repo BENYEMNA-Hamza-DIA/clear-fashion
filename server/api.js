@@ -37,9 +37,9 @@ console.log(`📡 Running on port ${PORT}`);
   response.send({ 'ack': true });
 });
 
-// server : https://server-omega-rust.vercel.app
+// server : https://server-six-xi.vercel.app
 
-// client : https://v2-ochre.vercel.app
+// client : https://v2-nine-drab.vercel.app
 
 
 
@@ -60,7 +60,7 @@ console.log(`📡 Running on port ${PORT}`);
 
  
  app.get('/products', async(request, response) => {
-  
+  await connection();
   let products = await db.all_products();
   
   response.send({"all product": products});
@@ -74,7 +74,7 @@ console.log(`📡 Running on port ${PORT}`);
  * URL app : https://server-omega-rust.vercel.app/products/624770dc476e88ed75be01b1
 */
  app.get('/products/:_id', async (request, response) => {
-
+  await connection();
   let product = await db.by_id(request.params._id);
   
   response.send({"product by id": product});
@@ -113,7 +113,7 @@ console.log(`📡 Running on port ${PORT}`);
 
 app.get('/products/search', async (request, response) => {
   // set default values for query parameters
-
+  //await connection();
   const { brand = 'all', price = 'all', limit = 12, skip = 0, sort = 1 } = request.query;
   
   if (brand === 'all' && price === 'all') {
@@ -141,7 +141,7 @@ app.get('/products/search', async (request, response) => {
 /***************************************************
  * Listen PORT
  */
-connection();
+//connection();
 app.listen(PORT);
 
 
