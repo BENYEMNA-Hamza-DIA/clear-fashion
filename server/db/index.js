@@ -1,5 +1,5 @@
 require('dotenv').config();
-const {MongoClient, ExplainVerbosity} = require('mongodb');
+const {MongoClient} = require('mongodb');
 
 const MONGODB_URI = 'mongodb+srv://hamza-ben:uKCd4vwXye2SCuzS@clearfashion.so4t2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const MONGODB_DB_NAME = 'ClearFashion';
@@ -7,16 +7,15 @@ const MONGODB_DB_NAME = 'ClearFashion';
 let client;
 let db;
 
-const products = require('../total_products.json'); //products of the crapping to store in the mongodb database
+const products = require('./total_products.json'); //products of the crapping to store in the mongodb database
 
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb'); //to get the id for the by_id function
 
 /**
  * Connection to the db 
  * @param {*} MONGODB_URI 
  * @param {*} MONGODB_DB_NAME 
  */
-
 
 
 const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => { 
@@ -35,7 +34,6 @@ const connect = async (uri = MONGODB_URI, name = MONGODB_DB_NAME) => {
 module.exports.connect = connect;
 
 
-
 /**
  * Close the connection to the db
  */
@@ -45,9 +43,6 @@ module.exports.connect = connect;
 }
 
 module.exports.close = close;
-
-
-
 
 
 /**
@@ -60,6 +55,8 @@ async function drop_database(){
 }
 */
 
+
+
 /***********************************************************
  * Methods for query
  */
@@ -71,18 +68,20 @@ async function drop_database(){
 
  module.exports.find_limit = async (query, limit) => {
  //find_limit = async (query, limit) => {
-  //await connect();
+  await connect();
   const result = await db.collection("products").aggregate(query).toArray();
   //console.log(result);
   return result;
 };
 
- 
-/**
+// I prefered to keep the method all_products because the API didn't work with this I don't know why
+
+/************************************************************************************************************
  * Method to search
  * @param {given query} query 
  * @returns 
- 
+ */
+
 module.exports.products_search = async (query, offset = 0, limit = 0) => {
 //products_search = async (query, offset = 0, limit = 0) => {
   //await connect();
@@ -92,7 +91,6 @@ module.exports.products_search = async (query, offset = 0, limit = 0) => {
   return products;
 
 }
-*/
 
 /**
  * Search usig a brand
@@ -113,7 +111,7 @@ function search_price(price){
 
 
 
-/** 
+/************************************************************************************************************ 
 * All products
 */
 
@@ -143,6 +141,11 @@ module.exports.by_id= async product_id => {
     return (product);
 }
 
+/*****************************************************************************************
+ * Unused function find that works
+ */
+
+
 /**
  * Find all the products using a brand
  * @param {given brand} brand 
@@ -160,13 +163,11 @@ module.exports.by_brand = async brand => {
 }
 
 
-
 /**
  * All the products that cost less than a given price
  * @param {given price} price 
  * @returns
  */
-
 
 less_than_price = async price => {
   //await connect();
@@ -178,7 +179,7 @@ less_than_price = async price => {
  }
 
 
-/**
+/*****************************************************************************************************************
  * Return all the products sorted by price asc
  */
 
