@@ -79,7 +79,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
     console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
     try {
         let response = await fetch(
-            `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+            `https://hamza-server-seven.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
         );
         let body = await response.json();
         if (body.length == 0) {
@@ -89,7 +89,7 @@ const fetchProducts = async (size = currentPagination.currentSize, page = "actua
             let limit = size * pageNumber;
             console.log("skip : ", skip, " | limit : ", limit, " | pageNumber : ", pageNumber)
             response = await fetch(
-                `https://server-seven-chi.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
+                `https://hamza-server-seven.vercel.app/products/search?brand=${brand}&price=${price}&sort=${sort}&limit=${limit}&skip${skip}`
             );
             body = await response.json()
         }
@@ -132,7 +132,7 @@ const renderProducts = products => {
                     <div class="first">
                         <div class="d-flex justify-content-between align-items-center">
                     </div>
-                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+                    </div> <img src="${product.photo}" class="img-fluid rounded thumbnail-image">
                 </div>
                 <div class="product-detail-container p-2">
                         <div class="d-flex justify-content-between align-items-center">
@@ -153,7 +153,7 @@ const renderProducts = products => {
                         <div class="d-flex justify-content-between align-items-center"> 
                                 </div>
                             
-                    </div> <img src="${product.image}" class="img-fluid rounded thumbnail-image">
+                    </div> <img src="${product.photo}" class="img-fluid rounded thumbnail-image">
                 </div><div class="product-detail-container p-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="${product.link}">${product.name}</br></a>

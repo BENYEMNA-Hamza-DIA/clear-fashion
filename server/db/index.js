@@ -7,7 +7,7 @@ const MONGODB_DB_NAME = 'ClearFashion';
 let client;
 let db;
 
-const products = require('./total_products.json'); //products of the crapping to store in the mongodb database
+const products = require('../total_products.json'); //products of the crapping to store in the mongodb database
 
 const { ObjectId } = require('mongodb'); //to get the id for the by_id function
 

@@ -47,6 +47,7 @@ h4 {
 }
 
 .photo img {
+    background-color: #bb6d40;
     height: 200px;
     width: auto;
     border-radius: 8px;
@@ -97,7 +98,7 @@ h4 {
 }
 
 .card {
-    background-color: rgb(201, 235, 253);
+    background-color: #bb6d40;
     border: none;
     border-radius: 10px;
     width: 250px;
